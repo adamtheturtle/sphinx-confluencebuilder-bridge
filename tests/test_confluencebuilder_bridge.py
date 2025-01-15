@@ -18,7 +18,9 @@ class TestConfluenceTOC:
 
     @pytest.mark.sphinx("html")
     def test_confluence_toc(
-        self, tmp_path: Path, make_app: Callable[..., SphinxTestApp]
+        self,
+        tmp_path: Path,
+        make_app: Callable[..., SphinxTestApp],
     ) -> None:
         """
         The table of contents directive renders like a normal table of

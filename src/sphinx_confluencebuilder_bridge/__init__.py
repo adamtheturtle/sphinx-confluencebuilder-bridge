@@ -79,11 +79,11 @@ def _link_role(
 
 def _mention_role(
     # We allow multiple unused function arguments, to match the Sphinx API.
-    role: str,  # noqa: ARG001
+    role: str,
     rawtext: str,
     text: str,
-    lineno: str,  # noqa: ARG001
-    inliner: Inliner,  # noqa: ARG001
+    lineno: str,
+    inliner: Inliner,
 ) -> tuple[list[Node], list[SystemMessage]]:
     """A role to create a mention link.
 
@@ -91,6 +91,9 @@ def _mention_role(
     full name, linking to their profile. For our HTML builder, we render
     a link with the user's user ID, linking to their profile.
     """
+    del role
+    del lineno
+    del inliner
     link_text = text
     confluence_mentions: dict[str, str] = {}
     url_base = ""
@@ -102,16 +105,19 @@ def _mention_role(
 
 def _doc_role(
     # We allow multiple unused function arguments, to match the Sphinx API.
-    role: str,  # noqa: ARG001
-    rawtext: str,  # noqa: ARG001
+    role: str,
+    rawtext: str,
     text: str,
-    lineno: str,  # noqa: ARG001
+    lineno: str,
     inliner: Inliner,
 ) -> tuple[list[Node], list[SystemMessage]]:
     """
     This role acts just like the ``:doc:`` role, linking to other documents in
     this project.
     """
+    del role
+    del rawtext
+    del lineno
     env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
     assert isinstance(env, BuildEnvironment)
     field = Field(name="")

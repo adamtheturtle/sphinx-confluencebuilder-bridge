@@ -14,7 +14,7 @@ from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.environment import BuildEnvironment
-from sphinx.errors import SphinxError
+from sphinx.errors import ExtensionError
 from sphinx.util.docfields import Field
 from sphinx.util.typing import ExtensionMetadata
 
@@ -112,17 +112,23 @@ def _mention_role(
             "The 'confluence_server_url' configuration value is required "
             "for the 'confluence_mention' role."
         )
-        raise SphinxError(message)
+        raise ExtensionError(message=message)
 
     if confluence_bridge_users is None:
         message = (
             "The 'confluence_bridge_users' configuration value is required "
             "for the 'confluence_mention' role."
         )
-        raise SphinxError(message)
+        raise ExtensionError(message=message)
 
     assert isinstance(confluence_bridge_users, dict)
     assert isinstance(server_url, str)
+    if text not in confluence_bridge_users:
+        message = (
+            f"The user '{text}' is not in the 'confluence_bridge_users' "
+            "configuration value."
+        )
+        raise ExtensionError(message=message)
     mention_id: str = confluence_bridge_users[text]
     assert isinstance(mention_id, str)
     link_url = urljoin(base=server_url, url=f"/wiki/people/{mention_id}")

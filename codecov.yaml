@@ -1,0 +1,11 @@
+---
+coverage:
+  status:
+    patch:
+      default:
+        # Require 100% test coverage.
+        target: 100%
+    project:
+      default:
+        # Require 100% test coverage.
+        target: 100%

@@ -1,0 +1,69 @@
+---
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # Run at 1:00 every day
+    - cron: 0 1 * * *
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+        uv-resolution: [highest, lowest-direct]
+        platform: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Lint
+        run: |
+          uv run --extra=dev pre-commit run --all-files --hook-stage pre-commit --verbose
+          uv run --extra=dev pre-commit run --all-files --hook-stage pre-push --verbose
+          uv run --extra=dev pre-commit run --all-files --hook-stage manual --verbose
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
+          UV_RESOLUTION: ${{ matrix.uv-resolution }}
+
+      - name: Build sample
+        run: |
+          make build-sample
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
+          UV_RESOLUTION: ${{ matrix.uv-resolution }}
+
+      - name: Build sample parallel
+        run: |
+          make build-sample-parallel
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
+          UV_RESOLUTION: ${{ matrix.uv-resolution }}
+
+      - name: Run tests
+        run: |
+          uv run --extra=dev pytest -s -vvv --cov-fail-under 100 --cov=src/ --cov=tests . --cov-report=xml
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
+          UV_RESOLUTION: ${{ matrix.uv-resolution }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - uses: pre-commit-ci/lite-action@v1.1.0
+        if: always()

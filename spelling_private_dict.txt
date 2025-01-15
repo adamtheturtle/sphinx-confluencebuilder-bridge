@@ -1,0 +1,17 @@
+admin
+beartype
+changelog
+conf
+hardcoded
+inline
+linters
+py
+pyright
+pytest
+reportUnknownMemberType
+reportUnknownParameterType
+reportUnknownVariableType
+rst
+str
+tuple
+whitespace

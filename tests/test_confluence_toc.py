@@ -71,8 +71,8 @@ def test_confluence_toc(
     docutils_directive_source = dedent(
         text="""\
             .. contents::
-            :class: this-will-duplicate-information-and-it-is-still-useful-here
-            """,
+               :class: this-will-duplicate-information-and-it-is-still-useful-here
+            """,  # noqa: E501
     )
 
     source_file.write_text(
@@ -155,17 +155,17 @@ def test_max_level(
 
     confluencebuilder_directive_source = dedent(
         text="""\
-            .. confluence_toc::
-            :max-level: 1
-            """,
+        .. confluence_toc::
+           :max-level: 1
+        """,
     )
 
     docutils_directive_source = dedent(
         text="""\
-            .. contents::
-            :class: this-will-duplicate-information-and-it-is-still-useful-here
-            :depth: 2
-            """,
+        .. contents::
+           :class: this-will-duplicate-information-and-it-is-still-useful-here
+           :depth: 2
+        """,
     )
 
     source_file.write_text(
@@ -185,6 +185,7 @@ def test_max_level(
         data=index_rst_template.format(toc=docutils_directive_source),
     )
     app = make_app(srcdir=source_directory)
+
     app.build()
     assert not app.warning.getvalue()
 

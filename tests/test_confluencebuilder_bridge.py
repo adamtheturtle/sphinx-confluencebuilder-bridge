@@ -41,30 +41,38 @@ class TestConfluenceTOC:
         source_file = source_directory / "index.rst"
         index_rst_template = dedent(
             text="""\
-            A
-            =
+             {toc}
 
-            B
-            -
+             A
+             =
 
-            Some text
+             B
+             -
 
-            C
-            -
+             Some text
 
-            Some text
+             C
+             -
 
-            A2
-            ==
+             Some text
 
-            {toc}
-            """
+             A2
+             ==
+
+             Other
+             """,
         )
 
         confluencebuilder_directive_source = dedent(
             text="""\
-            .. confluence_toc::
-            """,
+             .. confluence_toc::
+             """,
+        )
+
+        docutils_directive_source = dedent(
+            text="""\
+             .. contents::
+             """,
         )
 
         source_file.write_text(
@@ -72,6 +80,7 @@ class TestConfluenceTOC:
                 toc=confluencebuilder_directive_source,
             ),
         )
+
         app = make_app(srcdir=source_directory)
         app.build()
         assert not app.warning.getvalue()
@@ -79,12 +88,8 @@ class TestConfluenceTOC:
         confluencebuilder_directive_html = (
             app.outdir / "index.html"
         ).read_text()
+        app.cleanup()
 
-        docutils_directive_source = dedent(
-            text="""\
-            .. contents::
-            """,
-        )
         source_file.write_text(
             data=index_rst_template.format(toc=docutils_directive_source),
         )

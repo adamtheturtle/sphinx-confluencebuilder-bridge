@@ -54,9 +54,9 @@ class _Contents(Contents):
         # The Furo theme has a warning by default for the ``.. contents::``
         # directive.
         # We disable that warning for the ``.. confluence_toc::`` directive.
-        self.options["class"] = [
-            "this-will-duplicate-information-and-it-is-still-useful-here"
-        ]
+        # self.options["class"] = [
+        #     "this-will-duplicate-information-and-it-is-still-useful-here"
+        # ]
         return list(super().run())
 
 
@@ -149,8 +149,8 @@ def setup(app: Sphinx) -> ExtensionMetadata:
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
     HTML builder.
     """
-    # app.connect(
-    #     event="builder-inited",
-    #     callback=_connect_confluence_to_html_builder,
-    # )
+    app.connect(
+        event="builder-inited",
+        callback=_connect_confluence_to_html_builder,
+    )
     return {"parallel_read_safe": True, "parallel_write_safe": True}

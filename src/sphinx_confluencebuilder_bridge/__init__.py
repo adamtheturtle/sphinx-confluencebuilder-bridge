@@ -94,7 +94,7 @@ def _mention_role(
     """A role to create a mention link.
 
     On Confluence, mention links are rendered nicely with the user's
-    full name, linking to their profile. For our HTML builder, we render
+    full name, linking to their profile. For the HTML builder, we render
     a link with the user's user ID, linking to their profile.
     """
     del role

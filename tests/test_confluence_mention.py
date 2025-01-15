@@ -7,6 +7,7 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest
+from sphinx.errors import ExtensionError
 from sphinx.testing.util import SphinxTestApp
 
 
@@ -129,5 +130,12 @@ def test_mentioned_does_not_exist(
     )
 
     app = make_app(srcdir=source_directory)
-    app.build()
-    assert not app.warning.getvalue()
+    expected_regex = (
+        "The user 'eloise.red' is not in the "
+        "'confluence_bridge_users' configuration value."
+    )
+    with pytest.raises(
+        expected_exception=ExtensionError,
+        match=expected_regex,
+    ):
+        app.build()

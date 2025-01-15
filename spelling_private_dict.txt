@@ -1,4 +1,5 @@
 Atlassian
+Furo
 admin
 beartype
 changelog

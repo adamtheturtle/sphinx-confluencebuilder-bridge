@@ -37,6 +37,9 @@ The following directives are supported:
 
 * `confluence_toc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_toc>`_.
    * The only supported option is `max-level <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-option-confluence_toc-max-level>`_.
+* `confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_link>`_.
+   * No options are supported.
+   * This renders as a normal hyperlink, unlike in Confluence where the page title is shown.
 
 Contributing
 ------------

@@ -33,22 +33,37 @@ def test_confluence_doc(
     conf_py.write_text(data=conf_py_content)
 
     source_file = source_directory / "index.rst"
+    linked_file = source_directory / "other.rst"
+    linked_file_content = dedent(
+        text="""\
+        Other
+        =====
+
+        Some text
+        """,
+    )
+    linked_file.write_text(data=linked_file_content)
+
     index_rst_template = dedent(
         text="""\
-            {link}
-            """,
+        {link}
+
+        .. toctree::
+
+            other
+        """,
     )
 
     confluencebuilder_directive_source = dedent(
         text="""\
-            :confluence_link:`https://www.bbc.co.uk`
-            """,
+        :confluence_doc:`other`
+        """,
     )
 
     docutils_directive_source = dedent(
         text="""\
-            `https://www.bbc.co.uk <https://www.bbc.co.uk>`_
-            """,
+        :doc:`other`
+        """,
     )
 
     source_file.write_text(

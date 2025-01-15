@@ -14,6 +14,7 @@ from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.environment import BuildEnvironment
+from sphinx.errors import ExtensionError
 from sphinx.util.docfields import Field
 from sphinx.util.typing import ExtensionMetadata
 
@@ -93,17 +94,32 @@ def _mention_role(
     """A role to create a mention link.
 
     On Confluence, mention links are rendered nicely with the user's
-    full name, linking to their profile. For our HTML builder, we render
+    full name, linking to their profile. For the HTML builder, we render
     a link with the user's user ID, linking to their profile.
     """
     del role
     del lineno
-    del inliner
-    link_text = text
-    confluence_mentions: dict[str, str] = {}
-    url_base = ""
-    mention_id = confluence_mentions[text]
-    link_url = urljoin(base=url_base, url=f"jira/people/{mention_id}")
+    link_text = f"@{text}"
+    env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+    assert isinstance(env, BuildEnvironment)
+    users: dict[str, str] = env.config.confluence_bridge_users
+    server_url: str | None = env.config.confluence_server_url
+
+    if server_url is None:
+        message = (
+            "The 'confluence_server_url' configuration value is required "
+            "for the 'confluence_mention' role."
+        )
+        raise ExtensionError(message=message)
+
+    if text not in users:
+        message = (
+            f"The user '{text}' is not in the 'confluence_bridge_users' "
+            "configuration value."
+        )
+        raise ExtensionError(message=message)
+    mention_id: str = users[text]
+    link_url = urljoin(base=server_url, url=f"/wiki/people/{mention_id}")
     node = nodes.reference(rawsource=rawtext, text=link_text, refuri=link_url)
     return [node], []
 
@@ -142,6 +158,12 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)
     app.add_role(name="confluence_mention", role=_mention_role)
+    app.add_config_value(
+        name="confluence_bridge_users",
+        default={},
+        rebuild="",
+        types=dict[str, str],
+    )
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:

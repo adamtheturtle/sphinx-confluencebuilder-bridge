@@ -1,5 +1,6 @@
-"""
-Tests for the ``..confluence_toc::`` directive.
+"""Tests for the ``..
+
+confluence_toc::`` directive.
 """
 
 from collections.abc import Callable

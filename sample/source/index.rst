@@ -7,8 +7,8 @@ Configuration
 .. literalinclude:: conf.py
    :language: python
 
-Supported roles
----------------
+Supported roles and directives
+------------------------------
 
 ``confluence_toc``
 ~~~~~~~~~~~~~~~~~~
@@ -48,3 +48,12 @@ Output
 
 .. confluence_toc::
    :max-level: 1
+
+``confluence_link``
+~~~~~~~~~~~~~~~~~~~
+
+`confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_link>`_.
+
+.. rest-example::
+
+   :confluence_link:`https://www.bbc.co.uk`

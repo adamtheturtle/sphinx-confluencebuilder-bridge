@@ -1,5 +1,5 @@
 """
-Tests for the ``:confluence_link:`` role.
+Tests for the ``:confluence_doc:`` role.
 """
 
 from collections.abc import Callable
@@ -11,12 +11,12 @@ from sphinx.testing.util import SphinxTestApp
 
 
 @pytest.mark.sphinx("html")
-def test_confluence_link(
+def test_confluence_doc(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_link:`` role renders like a normal link.
+    The ``confluence_doc`` role renders like a normal link to another document.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()

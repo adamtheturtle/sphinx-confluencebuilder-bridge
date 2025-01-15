@@ -54,9 +54,9 @@ class _Contents(Contents):
         # The Furo theme has a warning by default for the ``.. contents::``
         # directive.
         # We disable that warning for the ``.. confluence_toc::`` directive.
-        # self.options["class"] = [
-        #     "this-will-duplicate-information-and-it-is-still-useful-here"
-        # ]
+        self.options["class"] = [
+            "this-will-duplicate-information-and-it-is-still-useful-here"
+        ]
         return list(super().run())
 
 

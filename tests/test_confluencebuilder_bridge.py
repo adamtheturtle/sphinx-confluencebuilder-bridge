@@ -72,7 +72,8 @@ class TestConfluenceTOC:
         docutils_directive_source = dedent(
             text="""\
              .. contents::
-             """,
+                :class: this-will-duplicate-information-and-it-is-still-useful-here
+             """,  # noqa: E501
         )
 
         source_file.write_text(

@@ -28,6 +28,12 @@ def test_confluence_mention(
             "sphinxcontrib.confluencebuilder",
             "sphinx_confluencebuilder_bridge",
         ]
+
+        confluence_bridge_users = {
+            "eloise.red": "1234a",
+        }
+
+        confluence_server_url = "https://example.com/wiki"
         """,
     )
     conf_py.write_text(data=conf_py_content)
@@ -47,7 +53,7 @@ def test_confluence_mention(
 
     docutils_directive_source = dedent(
         text="""\
-            `eloise.red <https://example.com/wiki/people/eloise_id>`_
+            `eloise.red <https://example.com/wiki/people/1234a>`_
             """,
     )
 

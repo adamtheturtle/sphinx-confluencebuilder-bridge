@@ -41,8 +41,6 @@ class TestConfluenceTOC:
         source_file = source_directory / "index.rst"
         index_rst_template = dedent(
             text="""\
-             {toc}
-
              A
              =
 
@@ -56,10 +54,13 @@ class TestConfluenceTOC:
 
              Some text
 
+             {toc}
+
              A2
              ==
 
              Other
+
              """,
         )
 

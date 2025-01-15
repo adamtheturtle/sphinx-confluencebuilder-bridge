@@ -48,6 +48,12 @@ The following roles are supported:
    * This renders as a normal hyperlink, unlike in Confluence where the page title is shown.
 * `confluence_doc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_doc>`_.
    * This renders as a normal documentation link, unlike in Confluence where the page title is shown.
+* `confluence_mention <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_mention>`_.
+   * This renders as a link with the text being the user name.
+   * Requires a custom ``conf.py`` setting, so that this extension knows where to link to:
+       * ``confluence_bridge_users``: A dictionary mapping Confluence username values to their corresponding key values.
+         * Example: ``{"eloise.red": "b9aaf35e80441f415c3a3d3c53695d0e"}``.
+         * Find a user's key by visiting their profile in Confluence and looking at the URL.
 
 Contributing
 ------------

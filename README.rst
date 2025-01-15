@@ -36,7 +36,6 @@ See `CONTRIBUTING.rst <./CONTRIBUTING.rst>`_.
 
 .. |Build Status| image:: https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge/actions/workflows/ci.yml/badge.svg?branch=main
    :target: https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge/actions
-.. _code-block: http://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block
 .. |codecov| image:: https://codecov.io/gh/adamtheturtle/sphinx-confluencebuilder-bridge/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/adamtheturtle/sphinx-confluencebuilder-bridge
 .. |PyPI| image:: https://badge.fury.io/py/sphinx-confluencebuilder-bridge.svg

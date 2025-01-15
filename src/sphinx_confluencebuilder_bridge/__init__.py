@@ -138,10 +138,10 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     if not isinstance(app.builder, StandaloneHTMLBuilder):
         return
 
-    app.add_directive(name="confluence_toc", cls=_Contents)
-    app.add_role(name="confluence_link", role=_link_role)
-    app.add_role(name="confluence_doc", role=_doc_role)
-    app.add_role(name="confluence_mention", role=_mention_role)
+    app.add_directive(name="confluence_toc", cls=_Contents, override=True)
+    app.add_role(name="confluence_link", role=_link_role, override=True)
+    app.add_role(name="confluence_doc", role=_doc_role, override=True)
+    app.add_role(name="confluence_mention", role=_mention_role, override=True)
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:
@@ -149,8 +149,8 @@ def setup(app: Sphinx) -> ExtensionMetadata:
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
     HTML builder.
     """
-    app.connect(
-        event="builder-inited",
-        callback=_connect_confluence_to_html_builder,
-    )
+    # app.connect(
+    #     event="builder-inited",
+    #     callback=_connect_confluence_to_html_builder,
+    # )
     return {"parallel_read_safe": True, "parallel_write_safe": True}

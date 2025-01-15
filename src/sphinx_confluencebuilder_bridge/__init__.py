@@ -42,7 +42,12 @@ class _Contents(Contents):
         # Here we translate the ``max-level`` option to ``depth``.
         # We add 1 to the ``max-level`` option, as it includes the page title
         # in the HTML builder.
-        self.options["depth"] = self.options.pop("max-level") + 1
+        #
+        # The ``depth`` option has a default of "unlimited". See:
+        # https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents.
+        default_depth = 1000
+        depth = self.options.pop("max-level", default_depth) + 1
+        self.options["depth"] = depth
         # In Confluence this directive shows and inline table of contents.
         # In the Furo HTML theme, the table of contents is shown in the
         # sidebar.
@@ -133,8 +138,6 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     if not isinstance(app.builder, StandaloneHTMLBuilder):
         return
 
-    # Unknown directive type" for a ``confluence`` role / directive in the link
-    # checker or spell checker.
     app.add_directive(name="confluence_toc", cls=_Contents)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)

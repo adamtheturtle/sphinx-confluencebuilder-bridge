@@ -11,10 +11,10 @@ name = "sphinx-confluencebuilder-bridge"
 description = "Extension for Sphinx which enables using directives and roles from Atlassian® Confluence® Builder for Sphinx in other Sphinx builders such as HTML."
 readme = { file = "README.rst", content-type = "text/x-rst" }
 keywords = [
+    "confluence",
     "documentation",
     "rst",
     "sphinx",
-    "confluence",
 ]
 license = { file = "LICENSE" }
 authors = [

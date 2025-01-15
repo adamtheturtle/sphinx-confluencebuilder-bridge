@@ -1,5 +1,5 @@
 """
-Tests for the ``:confluence_link:`` role.
+Tests for the ``:confluence_doc:`` role.
 """
 
 from collections.abc import Callable
@@ -11,12 +11,12 @@ from sphinx.testing.util import SphinxTestApp
 
 
 @pytest.mark.sphinx("html")
-def test_confluence_link(
+def test_confluence_doc(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_link:`` role renders like a normal link.
+    The ``confluence_doc`` role renders like a normal link to another document.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -33,22 +33,37 @@ def test_confluence_link(
     conf_py.write_text(data=conf_py_content)
 
     source_file = source_directory / "index.rst"
+    linked_file = source_directory / "other.rst"
+    linked_file_content = dedent(
+        text="""\
+        Other
+        =====
+
+        Some text
+        """,
+    )
+    linked_file.write_text(data=linked_file_content)
+
     index_rst_template = dedent(
         text="""\
-            {link}
-            """,
+        {link}
+
+        .. toctree::
+
+            other
+        """,
     )
 
     confluencebuilder_directive_source = dedent(
         text="""\
-            :confluence_link:`https://www.bbc.co.uk`
-            """,
+        :confluence_doc:`other`
+        """,
     )
 
     docutils_directive_source = dedent(
         text="""\
-            `https://www.bbc.co.uk <https://www.bbc.co.uk>`_
-            """,
+        :doc:`other`
+        """,
     )
 
     source_file.write_text(

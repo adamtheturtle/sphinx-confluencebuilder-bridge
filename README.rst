@@ -3,7 +3,7 @@
 Sphinx Confluence Builder Bridge
 ================================
 
-Extension for Sphinx which enables using directives and roles from `Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io>`_ in other Sphinx builders such as HTML.
+Extension for Sphinx which enables using directives and roles from `Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io>`_ in the Sphinx HTML builder.
 
 .. contents::
 
@@ -37,9 +37,17 @@ The following directives are supported:
 
 * `confluence_toc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_toc>`_.
    * The only supported option is `max-level <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-option-confluence_toc-max-level>`_.
-* `confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_link>`_.
-   * No options are supported.
+
+Supported roles
+---------------
+
+Only some of the `roles supported by Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io/directives>`_ are supported.
+The following roles are supported:
+
+* `confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_link>`_.
    * This renders as a normal hyperlink, unlike in Confluence where the page title is shown.
+* `confluence_doc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_doc>`_.
+   * This renders as a normal documentation link, unlike in Confluence where the page title is shown.
 
 Contributing
 ------------

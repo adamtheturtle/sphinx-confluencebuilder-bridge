@@ -100,12 +100,12 @@ def _mention_role(
     del role
     del lineno
     link_text = text
+    env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+    assert isinstance(env, BuildEnvironment)
     confluence_bridge_users: dict[str, str] | None = (
-        inliner.document.settings.env.config.confluence_bridge_users
+        env.config.confluence_bridge_users
     )
-    server_url: str | None = (
-        inliner.document.settings.env.config.confluence_server_url
-    )
+    server_url: str | None = env.config.confluence_server_url
 
     if server_url is None:
         message = (
@@ -121,8 +121,6 @@ def _mention_role(
         )
         raise ExtensionError(message=message)
 
-    assert isinstance(confluence_bridge_users, dict)
-    assert isinstance(server_url, str)
     if text not in confluence_bridge_users:
         message = (
             f"The user '{text}' is not in the 'confluence_bridge_users' "
@@ -130,7 +128,6 @@ def _mention_role(
         )
         raise ExtensionError(message=message)
     mention_id: str = confluence_bridge_users[text]
-    assert isinstance(mention_id, str)
     link_url = urljoin(base=server_url, url=f"/wiki/people/{mention_id}")
     node = nodes.reference(rawsource=rawtext, text=link_text, refuri=link_url)
     return [node], []

@@ -138,10 +138,10 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     if not isinstance(app.builder, StandaloneHTMLBuilder):
         return
 
-    app.add_directive(name="confluence_toc", cls=_Contents, override=True)
-    app.add_role(name="confluence_link", role=_link_role, override=True)
-    app.add_role(name="confluence_doc", role=_doc_role, override=True)
-    app.add_role(name="confluence_mention", role=_mention_role, override=True)
+    app.add_directive(name="confluence_toc", cls=_Contents)
+    app.add_role(name="confluence_link", role=_link_role)
+    app.add_role(name="confluence_doc", role=_doc_role)
+    app.add_role(name="confluence_mention", role=_mention_role)
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:

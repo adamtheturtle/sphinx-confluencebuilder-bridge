@@ -133,8 +133,6 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     if not isinstance(app.builder, StandaloneHTMLBuilder):
         return
 
-    # Unknown directive type" for a ``confluence`` role / directive in the link
-    # checker or spell checker.
     app.add_directive(name="confluence_toc", cls=_Contents)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)

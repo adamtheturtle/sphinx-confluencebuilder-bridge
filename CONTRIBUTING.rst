@@ -79,6 +79,6 @@ Perform a Release
 
    .. code-block:: shell
 
-      $ gh workflow run release.yml --repo adamtheturtle/sphinx-combine
+      $ gh workflow run release.yml --repo adamtheturtle/sphinx-confluencebuilder-bridge
 
 .. _Install GitHub CLI: https://cli.github.com/manual/installation

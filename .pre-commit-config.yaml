@@ -158,7 +158,7 @@ repos:
         stages: [pre-push]
         # Use `--ignoreexternal` because we expose parts of the Sphinx API and Sphinx is not
         # thoroughly typed enough.
-        entry: uv run --extra=dev -m pyright --ignoreexternal --verifytypes sphinx_combine
+        entry: uv run --extra=dev -m pyright --ignoreexternal --verifytypes sphinx_confluencebuilder_bridge
         language: python
         pass_filenames: false
         types_or: [python]

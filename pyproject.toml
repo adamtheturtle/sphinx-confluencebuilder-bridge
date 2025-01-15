@@ -7,13 +7,14 @@ requires = [
 ]
 
 [project]
-name = "sphinx-combine"
-description = "Extension for Sphinx which enables combining code blocks."
+name = "sphinx-confluencebuilder-bridge"
+description = "Extension for Sphinx which enables using directives and roles from Atlassian® Confluence® Builder for Sphinx in other Sphinx builders such as HTML."
 readme = { file = "README.rst", content-type = "text/x-rst" }
 keywords = [
     "documentation",
     "rst",
     "sphinx",
+    "confluence",
 ]
 license = { file = "LICENSE" }
 authors = [
@@ -76,7 +77,7 @@ optional-dependencies.dev = [
     "yamlfix==1.17.0",
 ]
 optional-dependencies.release = [ "check-wheel-contents==0.6.1" ]
-urls.Source = "https://github.com/adamtheturtle/sphinx-combine"
+urls.Source = "https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge"
 
 [tool.setuptools]
 zip-safe = false
@@ -87,7 +88,7 @@ where = [
 ]
 
 [tool.setuptools.package-data]
-sphinx_combine = [
+sphinx_confluencebuilder_bridge = [
     "py.typed",
 ]
 

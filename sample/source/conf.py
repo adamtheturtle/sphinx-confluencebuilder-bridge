@@ -3,5 +3,6 @@ Sample ``conf.py``.
 """
 
 extensions = [
-    "sphinx_combine",
+    "sphinxcontrib.confluencebuilder",
+    "sphinx_confluencebuilder_bridge",
 ]

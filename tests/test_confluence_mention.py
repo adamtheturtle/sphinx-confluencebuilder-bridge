@@ -54,7 +54,7 @@ def test_confluence_mention(
 
     docutils_directive_source = dedent(
         text="""\
-            `eloise.red <https://example.com/wiki/people/1234a>`_
+            `@eloise.red <https://example.com/wiki/people/1234a>`_
             """,
     )
 

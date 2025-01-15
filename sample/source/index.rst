@@ -1,6 +1,11 @@
 Samples for Confluence directives
 =================================
 
+.. toctree::
+   :hidden:
+
+   other
+
 Configuration
 -------------
 
@@ -72,7 +77,9 @@ Supported roles
 
    :confluence_doc:`other`
 
-.. toctree::
-   :hidden:
+``confluence_mention``
+~~~~~~~~~~~~~~~~~~~~~~
 
-   other
+.. rest-example::
+
+   :confluence_mention:`eloise.red`

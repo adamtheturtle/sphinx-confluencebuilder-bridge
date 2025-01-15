@@ -99,7 +99,7 @@ def _mention_role(
     """
     del role
     del lineno
-    link_text = text
+    link_text = f"@{text}"
     env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
     assert isinstance(env, BuildEnvironment)
     users: dict[str, str] = env.config.confluence_bridge_users

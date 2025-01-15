@@ -174,7 +174,7 @@ class TestConfluenceTOC:
             text="""\
              .. contents::
                 :class: this-will-duplicate-information-and-it-is-still-useful-here
-                :max-level: 2
+                :depth: 2
              """,  # noqa: E501
         )
 

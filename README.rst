@@ -27,7 +27,10 @@ Add the following to ``conf.py`` to enable the extension:
 
    extensions = ["sphinxcontrib.confluencebuilder"]  # Example existing extensions
 
-   extensions += ["sphinx_confluencebuilder_bridge"] # This must come after ``"sphinxcontrib.confluencebuilder"``
+   extensions += [
+      # This must come after ``"sphinxcontrib.confluencebuilder"``
+      "sphinx_confluencebuilder_bridge"
+   ]
 
 Supported directives
 --------------------

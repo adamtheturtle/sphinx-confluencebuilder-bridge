@@ -34,7 +34,7 @@ def test_confluence_mention(
             "eloise.red": "1234a",
         }
 
-        confluence_server_url = "https://example.com/wiki"
+        confluence_server_url = "https://example.com/wiki/"
         """,
     )
     conf_py.write_text(data=conf_py_content)
@@ -108,7 +108,7 @@ def test_mentioned_does_not_exist(
         confluence_bridge_users = {
         }
 
-        confluence_server_url = "https://example.com/wiki"
+        confluence_server_url = "https://example.com/wiki/"
         """,
     )
     conf_py.write_text(data=conf_py_content)
@@ -164,7 +164,7 @@ def test_users_not_given(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_server_url = "https://example.com/wiki"
+        confluence_server_url = "https://example.com/wiki/"
         """,
     )
     conf_py.write_text(data=conf_py_content)

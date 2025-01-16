@@ -35,7 +35,7 @@ Supported directives
 Only some of the `directives supported by Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io/directives>`_ are supported.
 The following directives are supported:
 
-* `confluence_toc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_toc>`_.
+* `confluence_toc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-confluence_toc>`_
    * The only supported option is `max-level <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-option-confluence_toc-max-level>`_.
 
 Supported roles
@@ -44,11 +44,11 @@ Supported roles
 Only some of the `roles supported by Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io/directives>`_ are supported.
 The following roles are supported:
 
-* `confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_link>`_.
+* `confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_link>`_
    * This renders as a normal hyperlink, unlike in Confluence where the page title is shown.
-* `confluence_doc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_doc>`_.
+* `confluence_doc <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_doc>`_
    * This renders as a normal documentation link, unlike in Confluence where the page title is shown.
-* `confluence_mention <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_mention>`_.
+* `confluence_mention <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_mention>`_
    * This renders as a link with the text being the user name.
    * Requires a custom ``conf.py`` setting, so that this extension knows where to link to:
        * ``confluence_bridge_users``: A dictionary mapping Confluence username values to their corresponding key values.

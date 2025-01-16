@@ -5,6 +5,7 @@ Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 
 from urllib.parse import urljoin
 
+import sphinxcontrib.confluencebuilder
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
@@ -12,6 +13,7 @@ from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
+from sphinx.builders.linkcheck import CheckExternalLinksBuilder
 from sphinx.environment import BuildEnvironment
 from sphinx.errors import ExtensionError
 from sphinx.util.docfields import Field
@@ -150,6 +152,14 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
     HTML builder.
     """
+    if isinstance(
+        app.builder,
+        (
+            sphinxcontrib.confluencebuilder.ConfluenceBuilder
+            | CheckExternalLinksBuilder
+        ),
+    ):
+        return
     app.add_directive(name="confluence_toc", cls=_Contents)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)

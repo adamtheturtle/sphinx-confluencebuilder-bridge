@@ -14,7 +14,7 @@ def test_not_html(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The roles and directives workfor non-HTML builders.
+    The roles and directives work for non-HTML builders.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -86,3 +86,56 @@ def test_not_html(
     ).read_text()
 
     assert confluencebuilder_directive_html == docutils_directive_html
+
+
+def test_linkcheck(
+    tmp_path: Path,
+    make_app: Callable[..., SphinxTestApp],
+) -> None:
+    """
+    The roles and directives work with the ``linkcheck`` builder.
+    """
+    source_directory = tmp_path / "source"
+    source_directory.mkdir()
+
+    conf_py = source_directory / "conf.py"
+    conf_py_content = dedent(
+        text="""\
+        extensions = [
+            "sphinxcontrib.confluencebuilder",
+            "sphinx_confluencebuilder_bridge",
+        ]
+
+        confluence_bridge_users = {
+            "eloise.red": "1234a",
+        }
+
+        confluence_server_url = "https://example.com/wiki"
+        """,
+    )
+    conf_py.write_text(data=conf_py_content)
+
+    source_file = source_directory / "index.rst"
+    index_rst_template = dedent(
+        text="""\
+            {mention}
+            """,
+    )
+
+    confluencebuilder_directive_source = dedent(
+        text="""\
+            :confluence_mention:`eloise.red`
+
+            :confluence_link:`https://www.bbc.co.uksdadsa`
+            """,
+    )
+
+    source_file.write_text(
+        data=index_rst_template.format(
+            mention=confluencebuilder_directive_source,
+        ),
+    )
+
+    app = make_app(srcdir=source_directory, buildername="linkcheck")
+    app.build()
+    assert not app.warning.getvalue()

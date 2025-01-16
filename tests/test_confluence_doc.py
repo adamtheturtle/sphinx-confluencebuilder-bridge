@@ -74,6 +74,7 @@ def test_confluence_doc(
 
     app = make_app(srcdir=source_directory)
     app.build()
+    assert app.statuscode == 0
     assert not app.warning.getvalue()
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
@@ -84,6 +85,7 @@ def test_confluence_doc(
     )
     app = make_app(srcdir=source_directory)
     app.build()
+    assert app.statuscode == 0
     assert not app.warning.getvalue()
 
     docutils_directive_html = (app.outdir / "index.html").read_text()

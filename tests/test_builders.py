@@ -9,12 +9,12 @@ from textwrap import dedent
 from sphinx.testing.util import SphinxTestApp
 
 
-def test_confluence_mention(
+def test_not_html(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_mention:`` role renders like a link to a user profile.
+    The roles and directives workfor non-HTML builders.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -46,12 +46,16 @@ def test_confluence_mention(
     confluencebuilder_directive_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
+
+            :confluence_link:`https://www.bbc.co.uk`
             """,
     )
 
     docutils_directive_source = dedent(
         text="""\
             `@eloise.red <https://example.com/wiki/people/1234a>`_
+
+            `https://www.bbc.co.uk <https://www.bbc.co.uk>`_
             """,
     )
 
@@ -65,7 +69,9 @@ def test_confluence_mention(
     app.build()
     assert not app.warning.getvalue()
 
-    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    confluencebuilder_directive_html = (
+        app.outdir.parent / "text" / "index.txt"
+    ).read_text()
     app.cleanup()
 
     source_file.write_text(
@@ -75,6 +81,8 @@ def test_confluence_mention(
     app.build()
     assert not app.warning.getvalue()
 
-    docutils_directive_html = (app.outdir / "index.html").read_text()
+    docutils_directive_html = (
+        app.outdir.parent / "text" / "index.txt"
+    ).read_text()
 
     assert confluencebuilder_directive_html == docutils_directive_html

@@ -152,8 +152,8 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     HTML builder.
     """
     # ``sphinxcontrib-confluencebuilder`` registers directives and roles e.g.
-    # for the Confluence, linkcheck and spelling builders based on logic around
-    # translators.
+    # for the ``confluence``, ``linkcheck`` and ``spelling`` builders based on
+    # logic around translators.
     # See https://github.com/sphinx-contrib/confluencebuilder/pull/936/files.
     #
     # We do not want to duplicate that logic here, so we check if the

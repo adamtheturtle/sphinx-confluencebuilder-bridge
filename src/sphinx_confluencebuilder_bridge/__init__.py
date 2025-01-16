@@ -5,7 +5,7 @@ Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 
 from urllib.parse import urljoin
 
-import sphinxcontrib.confluencebuilder
+import sphinxcontrib.confluencebuilder  # pyright: ignore[reportMissingTypeStubs]
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives

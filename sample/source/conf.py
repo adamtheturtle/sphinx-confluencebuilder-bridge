@@ -15,4 +15,4 @@ confluence_bridge_users = {
     "eloise.red": "1234a",
 }
 
-confluence_server_url = "https://example.com/wiki"
+confluence_server_url = "https://example.com/wiki/"

@@ -5,7 +5,6 @@ Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 
 from urllib.parse import urljoin
 
-import sphinxcontrib.confluencebuilder  # pyright: ignore[reportMissingTypeStubs]
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
@@ -13,10 +12,10 @@ from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
-from sphinx.builders.linkcheck import CheckExternalLinksBuilder
 from sphinx.environment import BuildEnvironment
 from sphinx.errors import ExtensionError
 from sphinx.util.docfields import Field
+from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
 
 
@@ -152,12 +151,20 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
     HTML builder.
     """
-    if isinstance(
-        app.builder,
-        (
-            sphinxcontrib.confluencebuilder.ConfluenceBuilder
-            | CheckExternalLinksBuilder
-        ),
+    # ``sphinxcontrib-confluencebuilder`` registers directives and roles e.g.
+    # for the ``confluence``, ``linkcheck`` and ``spelling`` builders based on
+    # logic around translators.
+    # See https://github.com/sphinx-contrib/confluencebuilder/pull/936/files.
+    #
+    # We do not want to duplicate that logic here, so we check if the
+    # directives and roles are already registered.
+    if any(
+        [
+            is_directive_registered(name="confluence_toc"),
+            is_role_registered(name="confluence_link"),
+            is_role_registered(name="confluence_doc"),
+            is_role_registered(name="confluence_mention"),
+        ]
     ):
         return
     app.add_directive(name="confluence_toc", cls=_Contents)

@@ -101,7 +101,7 @@ def test_linkcheck(
             "eloise.red": "1234a",
         }
 
-        confluence_server_url = "https://example.com/wiki"
+        confluence_server_url = "https://example.com/wiki/"
         """,
     )
     conf_py.write_text(data=conf_py_content)

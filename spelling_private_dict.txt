@@ -10,6 +10,7 @@ linters
 py
 pyright
 pytest
+reportMissingTypeStubs
 reportUnknownMemberType
 reportUnknownParameterType
 reportUnknownVariableType

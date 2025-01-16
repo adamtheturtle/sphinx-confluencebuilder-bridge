@@ -15,10 +15,8 @@ from sphinx.application import Sphinx
 from sphinx.environment import BuildEnvironment
 from sphinx.errors import ExtensionError
 from sphinx.util.docfields import Field
+from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
-from sphinxcontrib.confluencebuilder.builder import (  # pyright: ignore[reportMissingTypeStubs]
-    ConfluenceBuilder,
-)
 
 
 class _Contents(Contents):
@@ -153,31 +151,22 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
     HTML builder.
     """
-    # Match the logic in https://github.com/sphinx-contrib/confluencebuilder/pull/936/files
-    # on when to add the directives and roles.
-    # always skip initialization if configured to do so
-    if app.config.confluence_adv_disable_init:
+    # ``sphinxcontrib-confluencebuilder`` registers directives and roles e.g.
+    # for the Confluence, linkcheck and spelling builders based on logic around
+    # translators.
+    # See https://github.com/sphinx-contrib/confluencebuilder/pull/936/files.
+    #
+    # We do not want to duplicate that logic here, so we check if the
+    # directives and roles are already registered.
+    if any(
+        [
+            is_directive_registered(name="confluence_toc"),
+            is_role_registered(name="confluence_link"),
+            is_role_registered(name="confluence_doc"),
+            is_role_registered(name="confluence_mention"),
+        ]
+    ):
         return
-
-    # ignore non-confluence builder types if they have a translator
-    # (i.e. a builder that needs to support processing nodes generated
-    # from custom directives/roles); this allows other builders such
-    # as Sphinx's external link check to not generate warnings about
-    # unknown directives/roles, while being flexible for builder that
-    # expect to translate but would generate an exception for an unknown
-    # node
-    if not isinstance(app.builder, ConfluenceBuilder):
-        try:
-            translator = app.builder.get_translator_class()
-        except AttributeError:
-            pass
-        else:
-            if translator:
-                return
-
-    if isinstance(app.builder, ConfluenceBuilder):
-        return
-
     app.add_directive(name="confluence_toc", cls=_Contents)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)

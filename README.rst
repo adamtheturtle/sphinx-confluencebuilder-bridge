@@ -4,6 +4,7 @@ Sphinx Confluence Builder Bridge
 ================================
 
 Extension for Sphinx which enables using directives and roles from `Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io>`_ in other Sphinx builders such as HTML.
+This enables you to use HTML builds for easy iteration while developing documentation which is primarily meant for Confluence.
 
 .. contents::
 

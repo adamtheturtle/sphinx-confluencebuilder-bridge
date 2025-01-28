@@ -97,7 +97,7 @@ def test_linkcheck(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_bridge_users = {
+        confluence_mentions = {
             "eloise.red": "1234a",
         }
 

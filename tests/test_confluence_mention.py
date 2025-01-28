@@ -11,13 +11,13 @@ from sphinx.errors import ExtensionError
 from sphinx.testing.util import SphinxTestApp
 
 
-@pytest.mark.sphinx("html")
-def test_confluence_mention(
+def test_confluence_mention_with_user_id(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_mention:`` role renders like a link to a user profile.
+    The ``:confluence_mention:`` role renders like a link to a user ID when
+    using an identifier not set in ``confluence_mentions``.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -30,7 +30,77 @@ def test_confluence_mention(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_bridge_users = {
+        confluence_server_url = "https://example.com/wiki/"
+        """,
+    )
+    conf_py.write_text(data=conf_py_content)
+
+    source_file = source_directory / "index.rst"
+    index_rst_template = dedent(
+        text="""\
+            {mention}
+            """,
+    )
+
+    confluencebuilder_directive_source = dedent(
+        text="""\
+            :confluence_mention:`1234a`
+            """,
+    )
+
+    docutils_directive_source = dedent(
+        text="""\
+            `@1234a <https://example.com/wiki/people/1234a>`_
+            """,
+    )
+
+    source_file.write_text(
+        data=index_rst_template.format(
+            mention=confluencebuilder_directive_source,
+        ),
+    )
+
+    app = make_app(srcdir=source_directory)
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    app.cleanup()
+
+    source_file.write_text(
+        data=index_rst_template.format(mention=docutils_directive_source),
+    )
+    app = make_app(srcdir=source_directory)
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    docutils_directive_html = (app.outdir / "index.html").read_text()
+
+    assert confluencebuilder_directive_html == docutils_directive_html
+
+
+def test_confluence_mention_with_user_identifier(
+    tmp_path: Path,
+    make_app: Callable[..., SphinxTestApp],
+) -> None:
+    """
+    The ``:confluence_mention:`` role renders like a link to a user profile
+    when using an identifier set in ``confluence_mentions``.
+    """
+    source_directory = tmp_path / "source"
+    source_directory.mkdir()
+
+    conf_py = source_directory / "conf.py"
+    conf_py_content = dedent(
+        text="""\
+        extensions = [
+            "sphinxcontrib.confluencebuilder",
+            "sphinx_confluencebuilder_bridge",
+        ]
+
+        confluence_mentions = {
             "eloise.red": "1234a",
         }
 
@@ -85,14 +155,13 @@ def test_confluence_mention(
     assert confluencebuilder_directive_html == docutils_directive_html
 
 
-@pytest.mark.sphinx("html")
-def test_mentioned_does_not_exist(
+def test_confluence_mention_with_user_identifier_not_in_mentions(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    An error is raised if the ``confluence_bridge_users`` configuration value
-    does not contain the given user.
+    The ``:confluence_mention:`` role assumes that if a user identifier is not
+    in the me when using an identifier set in ``confluence_mentions``.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -105,7 +174,7 @@ def test_mentioned_does_not_exist(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_bridge_users = {
+        confluence_mentions = {
         }
 
         confluence_server_url = "https://example.com/wiki/"
@@ -126,59 +195,9 @@ def test_mentioned_does_not_exist(
             """,
     )
 
-    source_file.write_text(
-        data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
-        ),
-    )
-
-    app = make_app(srcdir=source_directory)
-    expected_regex = (
-        "The user 'eloise.red' is not in the "
-        "'confluence_bridge_users' configuration value."
-    )
-    with pytest.raises(
-        expected_exception=ExtensionError,
-        match=expected_regex,
-    ):
-        app.build()
-
-
-@pytest.mark.sphinx("html")
-def test_users_not_given(
-    tmp_path: Path,
-    make_app: Callable[..., SphinxTestApp],
-) -> None:
-    """
-    An error is raised if the ``confluence_bridge_users`` configuration value
-    is not given.
-    """
-    source_directory = tmp_path / "source"
-    source_directory.mkdir()
-
-    conf_py = source_directory / "conf.py"
-    conf_py_content = dedent(
+    docutils_directive_source = dedent(
         text="""\
-        extensions = [
-            "sphinxcontrib.confluencebuilder",
-            "sphinx_confluencebuilder_bridge",
-        ]
-
-        confluence_server_url = "https://example.com/wiki/"
-        """,
-    )
-    conf_py.write_text(data=conf_py_content)
-
-    source_file = source_directory / "index.rst"
-    index_rst_template = dedent(
-        text="""\
-            {mention}
-            """,
-    )
-
-    confluencebuilder_directive_source = dedent(
-        text="""\
-            :confluence_mention:`eloise.red`
+            `@eloise.red <https://example.com/wiki/people/eloise.red>`_
             """,
     )
 
@@ -189,18 +208,26 @@ def test_users_not_given(
     )
 
     app = make_app(srcdir=source_directory)
-    expected_regex = (
-        "The user 'eloise.red' is not in the "
-        "'confluence_bridge_users' configuration value."
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    app.cleanup()
+
+    source_file.write_text(
+        data=index_rst_template.format(mention=docutils_directive_source),
     )
-    with pytest.raises(
-        expected_exception=ExtensionError,
-        match=expected_regex,
-    ):
-        app.build()
+    app = make_app(srcdir=source_directory)
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    docutils_directive_html = (app.outdir / "index.html").read_text()
+
+    assert confluencebuilder_directive_html == docutils_directive_html
 
 
-@pytest.mark.sphinx("html")
 def test_server_url_not_given(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
@@ -219,7 +246,7 @@ def test_server_url_not_given(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_bridge_users = {
+        confluence_mentions = {
             "eloise.red": "1234a",
         }
         """,

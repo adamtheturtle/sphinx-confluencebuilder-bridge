@@ -28,7 +28,7 @@ def test_not_html(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_bridge_users = {
+        confluence_mentions = {
             "eloise.red": "1234a",
         }
 
@@ -115,7 +115,7 @@ def test_translatable_builders(
             "sphinx_confluencebuilder_bridge",
         ]
 
-        confluence_bridge_users = {
+        confluence_mentions = {
             "eloise.red": "1234a",
         }
 

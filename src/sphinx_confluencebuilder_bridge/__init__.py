@@ -102,7 +102,7 @@ def _mention_role(
     link_text = f"@{text}"
     env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
     assert isinstance(env, BuildEnvironment)
-    users: dict[str, str] = env.config.confluence_bridge_users
+    users: dict[str, str] | None = env.config.confluence_mentions
     server_url: str | None = env.config.confluence_server_url
 
     if server_url is None:
@@ -112,13 +112,10 @@ def _mention_role(
         )
         raise ExtensionError(message=message)
 
-    if text not in users:
-        message = (
-            f"The user '{text}' is not in the 'confluence_bridge_users' "
-            "configuration value."
-        )
-        raise ExtensionError(message=message)
-    mention_id: str = users[text]
+    if users is None or text not in users:
+        mention_id = text
+    else:
+        mention_id: str = users[text]
     link_url = urljoin(base=server_url, url=f"/wiki/people/{mention_id}")
     node = nodes.reference(rawsource=rawtext, text=link_text, refuri=link_url)
     return [node], []
@@ -171,12 +168,6 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)
     app.add_role(name="confluence_mention", role=_mention_role)
-    app.add_config_value(
-        name="confluence_bridge_users",
-        default={},
-        rebuild="",
-        types=dict[str, str],
-    )
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:

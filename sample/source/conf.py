@@ -11,7 +11,7 @@ extensions = [
 # We do Furo specific work, so we use the Furo theme.
 html_theme = "furo"
 
-confluence_bridge_users = {
+confluence_mentions = {
     "eloise.red": "1234a",
 }
 

@@ -6,11 +6,9 @@ from collections.abc import Callable
 from pathlib import Path
 from textwrap import dedent
 
-import pytest
 from sphinx.testing.util import SphinxTestApp
 
 
-@pytest.mark.sphinx("html")
 def test_confluence_doc(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],

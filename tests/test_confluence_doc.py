@@ -20,7 +20,6 @@ def test_confluence_doc(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
     (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"

@@ -19,7 +19,6 @@ def test_not_html(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
     (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"
@@ -103,7 +102,6 @@ def test_translatable_builders(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
     (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"

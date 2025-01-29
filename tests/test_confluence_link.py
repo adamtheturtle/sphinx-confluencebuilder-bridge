@@ -21,7 +21,6 @@ def test_confluence_link(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
     (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"
@@ -87,7 +86,6 @@ def test_linkcheck(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
     (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"

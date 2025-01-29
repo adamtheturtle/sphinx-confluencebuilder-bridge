@@ -3,6 +3,7 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
 from docutils import nodes
@@ -12,11 +13,13 @@ from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
-from sphinx.environment import BuildEnvironment
 from sphinx.errors import ExtensionError
 from sphinx.util.docfields import Field
 from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
+
+if TYPE_CHECKING:
+    from sphinx.environment import BuildEnvironment
 
 
 class _Contents(Contents):
@@ -101,7 +104,6 @@ def _mention_role(
     del lineno
     link_text = f"@{text}"
     env: BuildEnvironment = inliner.document.settings.env
-    assert isinstance(env, BuildEnvironment)
     users: dict[str, str] | None = env.config.confluence_mentions
     server_url: str | None = env.config.confluence_server_url
 
@@ -137,7 +139,6 @@ def _doc_role(
     del rawtext
     del lineno
     env: BuildEnvironment = inliner.document.settings.env
-    assert isinstance(env, BuildEnvironment)
     field = Field(name="")
     node = field.make_xref(rolename="doc", domain="std", target=text, env=env)
     return [node], []

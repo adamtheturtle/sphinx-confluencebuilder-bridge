@@ -100,7 +100,7 @@ def _mention_role(
     del role
     del lineno
     link_text = f"@{text}"
-    env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+    env: BuildEnvironment = inliner.document.settings.env
     assert isinstance(env, BuildEnvironment)
     users: dict[str, str] | None = env.config.confluence_mentions
     server_url: str | None = env.config.confluence_server_url
@@ -136,7 +136,7 @@ def _doc_role(
     del role
     del rawtext
     del lineno
-    env: BuildEnvironment = inliner.document.settings.env  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+    env: BuildEnvironment = inliner.document.settings.env
     assert isinstance(env, BuildEnvironment)
     field = Field(name="")
     node = field.make_xref(rolename="doc", domain="std", target=text, env=env)

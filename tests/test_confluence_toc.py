@@ -19,17 +19,7 @@ def test_confluence_toc(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
-    conf_py = source_directory / "conf.py"
-    conf_py_content = dedent(
-        text="""\
-        extensions = [
-            "sphinxcontrib.confluencebuilder",
-            "sphinx_confluencebuilder_bridge",
-        ]
-        """,
-    )
-    conf_py.write_text(data=conf_py_content)
+    (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"
     index_rst_template = dedent(
@@ -80,7 +70,15 @@ def test_confluence_toc(
         ),
     )
 
-    app = make_app(srcdir=source_directory)
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+        },
+    )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
@@ -111,19 +109,9 @@ def test_max_level(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
-    conf_py = source_directory / "conf.py"
-    conf_py_content = dedent(
-        text="""\
-        extensions = [
-            "sphinxcontrib.confluencebuilder",
-            "sphinx_confluencebuilder_bridge",
-        ]
-        """,
-    )
-    conf_py.write_text(data=conf_py_content)
-
+    (source_directory / "conf.py").touch()
     source_file = source_directory / "index.rst"
+
     index_rst_template = dedent(
         text="""\
             Heading A
@@ -174,7 +162,15 @@ def test_max_level(
         ),
     )
 
-    app = make_app(srcdir=source_directory)
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+        },
+    )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()

@@ -19,17 +19,7 @@ def test_confluence_link(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
-    conf_py = source_directory / "conf.py"
-    conf_py_content = dedent(
-        text="""\
-        extensions = [
-            "sphinxcontrib.confluencebuilder",
-            "sphinx_confluencebuilder_bridge",
-        ]
-        """,
-    )
-    conf_py.write_text(data=conf_py_content)
+    (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"
     index_rst_template = dedent(
@@ -56,7 +46,15 @@ def test_confluence_link(
         ),
     )
 
-    app = make_app(srcdir=source_directory)
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+        },
+    )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
@@ -86,23 +84,7 @@ def test_linkcheck(
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
-
-    conf_py = source_directory / "conf.py"
-    conf_py_content = dedent(
-        text="""\
-        extensions = [
-            "sphinxcontrib.confluencebuilder",
-            "sphinx_confluencebuilder_bridge",
-        ]
-
-        confluence_mentions = {
-            "eloise.red": "1234a",
-        }
-
-        confluence_server_url = "https://example.com/wiki/"
-        """,
-    )
-    conf_py.write_text(data=conf_py_content)
+    (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"
     index_rst_content = dedent(
@@ -115,7 +97,20 @@ def test_linkcheck(
 
     source_file.write_text(data=index_rst_content)
 
-    app = make_app(srcdir=source_directory, buildername="linkcheck")
+    app = make_app(
+        srcdir=source_directory,
+        buildername="linkcheck",
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+            "confluence_mentions": {
+                "eloise.red": "1234a",
+            },
+            "confluence_server_url": "https://example.com/wiki/",
+        },
+    )
     app.build()
     assert not app.warning.getvalue()
     assert app.statuscode != 0

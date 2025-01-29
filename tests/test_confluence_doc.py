@@ -21,16 +21,7 @@ def test_confluence_doc(
     source_directory = tmp_path / "source"
     source_directory.mkdir()
 
-    conf_py = source_directory / "conf.py"
-    conf_py_content = dedent(
-        text="""\
-        extensions = [
-            "sphinxcontrib.confluencebuilder",
-            "sphinx_confluencebuilder_bridge",
-        ]
-        """,
-    )
-    conf_py.write_text(data=conf_py_content)
+    (source_directory / "conf.py").touch()
 
     source_file = source_directory / "index.rst"
     linked_file = source_directory / "other.rst"
@@ -72,7 +63,15 @@ def test_confluence_doc(
         ),
     )
 
-    app = make_app(srcdir=source_directory)
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+        },
+    )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()

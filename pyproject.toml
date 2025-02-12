@@ -53,7 +53,7 @@ optional-dependencies.dev = [
     "interrogate==1.7.0",
     "mypy[faster-cache]==1.15.0",
     "mypy-strict-kwargs==2024.12.25",
-    "myst-parser==4.0.0",
+    "myst-parser==4.0.1",
     "pre-commit==4.1.0",
     "pyenchant==3.3.0rc1",
     "pylint==3.3.4",

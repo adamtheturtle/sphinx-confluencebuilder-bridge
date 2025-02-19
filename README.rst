@@ -11,7 +11,7 @@ This enables you to use HTML builds for easy iteration while developing document
 Installation
 ------------
 
-``sphinx-confluencebuilder-bridge`` is compatible with Sphinx 7.2.0+ using Python 3.10+.
+``sphinx-confluencebuilder-bridge`` is compatible with Sphinx 7.2.0+ using Python |minimum-python-version|\+.
 
 .. code-block:: console
 
@@ -67,3 +67,4 @@ See `CONTRIBUTING.rst <./CONTRIBUTING.rst>`_.
    :target: https://codecov.io/gh/adamtheturtle/sphinx-confluencebuilder-bridge
 .. |PyPI| image:: https://badge.fury.io/py/sphinx-confluencebuilder-bridge.svg
    :target: https://badge.fury.io/py/sphinx-confluencebuilder-bridge
+.. |minimum-python-version| replace:: 3.11

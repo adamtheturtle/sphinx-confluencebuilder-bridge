@@ -70,6 +70,7 @@ optional-dependencies.dev = [
     # We use `sphinx.testing`.
     "sphinx[test]==8.2.0",
     "sphinx-lint==1.0.0",
+    "sphinx-pyproject==0.3.0",
     "sphinx-toolbox==3.8.3",
     "sphinxcontrib-confluencebuilder==2.11.0",
     "sphinxcontrib-spelling==8.0.1",

@@ -45,7 +45,7 @@ The following directives are supported:
 Supported roles
 ---------------
 
-Only some of the `roles supported by Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io/directives>`_ are supported.
+Only some of the `roles supported by Atlassian® Confluence® Builder for Sphinx <https://sphinxcontrib-confluencebuilder.readthedocs.io/roles>`_ are supported.
 The following roles are supported:
 
 * `confluence_link <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/roles/#role-confluence_link>`_

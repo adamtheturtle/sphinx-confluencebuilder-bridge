@@ -103,23 +103,33 @@ def test_translatable_builders(
     source_directory = tmp_path / "source"
     source_directory.mkdir()
     (source_directory / "conf.py").touch()
+    (source_directory / "other.rst").touch()
 
     source_file = source_directory / "index.rst"
     index_rst_template = dedent(
         text="""\
-            {mention}
+            {source}
             """,
     )
 
     confluencebuilder_directive_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
+
+            Title with :confluence_doc:`other` link
+            =======================================
+
+            Something
+
+            .. toctree::
+
+               other
             """,
     )
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            source=confluencebuilder_directive_source,
         ),
     )
 

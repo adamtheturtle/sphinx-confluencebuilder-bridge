@@ -115,7 +115,7 @@ def test_confluence_doc_in_heading(
 
     index_rst_template = dedent(
         text="""\
-        {link}
+        {heading}
 
         .. toctree::
 
@@ -125,19 +125,21 @@ def test_confluence_doc_in_heading(
 
     confluencebuilder_directive_source = dedent(
         text="""\
-        :confluence_doc:`other`
+        Heading with :confluence_doc:`other`
+        ====================================
         """,
     )
 
     docutils_directive_source = dedent(
         text="""\
-        :doc:`other`
+        Heading with :doc:`other`
+        =========================
         """,
     )
 
     source_file.write_text(
         data=index_rst_template.format(
-            link=confluencebuilder_directive_source,
+            heading=confluencebuilder_directive_source,
         ),
     )
 
@@ -158,7 +160,7 @@ def test_confluence_doc_in_heading(
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(link=docutils_directive_source),
+        data=index_rst_template.format(heading=docutils_directive_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()

@@ -184,8 +184,10 @@ def setup(app: Sphinx) -> ExtensionMetadata:
         event="builder-inited",
         callback=_connect_confluence_to_html_builder,
     )
+    # This is not perfect - it does not render exactly the same as a Confluence
+    # document card, but it is close enough.
     app.add_node(
         node=confluence_doc_card_inline,
-        override=True,
+        override=False,
     )
     return {"parallel_read_safe": True, "parallel_write_safe": True}

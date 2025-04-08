@@ -171,6 +171,10 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     app.add_role(name="confluence_mention", role=_mention_role)
 
 
+class confluence_doc_card_inline(nodes.Inline, nodes.Element):
+    pass
+
+
 def setup(app: Sphinx) -> ExtensionMetadata:
     """
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
@@ -179,5 +183,9 @@ def setup(app: Sphinx) -> ExtensionMetadata:
     app.connect(
         event="builder-inited",
         callback=_connect_confluence_to_html_builder,
+    )
+    app.add_node(
+        node=confluence_doc_card_inline,
+        override=True,
     )
     return {"parallel_read_safe": True, "parallel_write_safe": True}

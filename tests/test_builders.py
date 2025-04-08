@@ -103,7 +103,9 @@ def test_translatable_builders(
     source_directory = tmp_path / "source"
     source_directory.mkdir()
     (source_directory / "conf.py").touch()
-    (source_directory / "other.rst").touch()
+    (source_directory / "other.rst").write_text(
+        data="Other\n=====\n\nSome text\n"
+    )
 
     source_file = source_directory / "index.rst"
     index_rst_template = dedent(

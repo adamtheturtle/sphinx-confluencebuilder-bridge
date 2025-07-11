@@ -4,7 +4,6 @@ Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
 import shutil
-import uuid
 from collections.abc import Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -90,7 +89,7 @@ class _ViewPDF(Figure):
     def run(self) -> Sequence[Node]:
         """
         Show an inline image which is a screenshot of the first page of the
-        PDF, with a text caption.
+        PDF.
         """
         env = self.state.document.settings.env
         pdf_relpath = self.arguments[0]
@@ -98,14 +97,8 @@ class _ViewPDF(Figure):
         src_pdf_path = Path(env.srcdir) / pdf_relpath
         generated_images_path = Path(env.srcdir) / "_generated_images"
         generated_images_path.mkdir(parents=True, exist_ok=True)
-        generated_image_path = (
-            generated_images_path / f"image-{uuid.uuid4().hex}.jpeg"
-        )
-
-        emphasised_text = nodes.paragraph()
-        emphasised_text += nodes.emphasis(
-            text=f"Confluence shows an inline preview of {pdf_relpath}",
-        )
+        generated_image_path = generated_images_path / pdf_relpath
+        generated_image_path = generated_image_path.with_suffix(suffix=".png")
 
         doc = pymupdf.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)  # pyright: ignore[reportUnknownMemberType]
@@ -116,7 +109,7 @@ class _ViewPDF(Figure):
         self.arguments[0] = str(
             object=generated_image_path.relative_to(env.srcdir),
         )
-        return [*emphasised_text, *super().run()]
+        return super().run()
 
 
 def _link_role(

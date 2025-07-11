@@ -1,5 +1,6 @@
 """Tests for the ``..confluence_viewpdf::`` directive."""
 
+import shutil
 from collections.abc import Callable
 from pathlib import Path
 from textwrap import dedent
@@ -15,9 +16,14 @@ def test_confluence_viewpdf(
     The ``..confluence_viewpdf::`` directive renders like a normal PDF link.
     """
     source_directory = tmp_path / "source"
-    pdf_path = source_directory / "example.pdf"
     source_directory.mkdir()
     (source_directory / "conf.py").touch()
+    pdf_path = Path(__file__).parent / "data" / "example.pdf"
+    shutil.copyfile(
+        src=pdf_path,
+        dst=source_directory / "example.pdf",
+    )
+    (source_directory / "example.png").touch()
 
     source_file = source_directory / "index.rst"
     index_rst_template = dedent(
@@ -27,14 +33,14 @@ def test_confluence_viewpdf(
     )
 
     confluencebuilder_directive_source = dedent(
-        text=f"""\
-            .. confluence_viewpdf:: {pdf_path}
+        text="""\
+            .. confluence_viewpdf:: example.pdf
             """,
     )
 
     docutils_directive_source = dedent(
-        text=f"""\
-            Inline view of :download:`example.pdf <{pdf_path}>`_
+        text="""\
+            .. figure:: example.png
             """,
     )
 

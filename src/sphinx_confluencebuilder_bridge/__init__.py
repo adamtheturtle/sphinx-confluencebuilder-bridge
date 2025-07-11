@@ -3,6 +3,7 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+import uuid
 from collections.abc import Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -81,7 +82,9 @@ class _ViewPDF(Image):
         src_pdf_path = Path(env.srcdir) / pdf_relpath
         generated_images_path = src_pdf_path.parent / "_generated_images"
         generated_images_path.mkdir(parents=True, exist_ok=True)
-        generated_image_path = generated_images_path / "image.jpeg"
+        generated_image_path = (
+            generated_images_path / f"image-{uuid.uuid4().hex}.jpeg"
+        )
 
         doc = pymupdf.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)

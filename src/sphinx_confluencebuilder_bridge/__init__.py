@@ -14,7 +14,7 @@ import pymupdf  # pyright: ignore[reportMissingTypeStubs]
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
-from docutils.parsers.rst.directives.images import Image
+from docutils.parsers.rst.directives.images import Figure
 from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
@@ -74,17 +74,24 @@ def _cleanup_generated_images(
     app: Sphinx,
     _exception: BaseException | None,
 ) -> None:
+    """
+    Clean up the generated images after the build is finished.
+    """
     generated_dir = Path(app.env.srcdir) / "_generated_images"
     shutil.rmtree(generated_dir, ignore_errors=True)
 
 
-class _ViewPDF(Image):
+class _ViewPDF(Figure):
     """A node to represent a PDF link in the HTML builder.
 
     This is used by the ``.. confluence_viewpdf::`` directive.
     """
 
     def run(self) -> Sequence[Node]:
+        """
+        Show an inline image which is a screenshot of the first page of the
+        PDF, with a text caption.
+        """
         env = self.state.document.settings.env
         pdf_relpath = self.arguments[0]
 
@@ -95,6 +102,11 @@ class _ViewPDF(Image):
             generated_images_path / f"image-{uuid.uuid4().hex}.jpeg"
         )
 
+        emphasised_text = nodes.paragraph()
+        emphasised_text += nodes.emphasis(
+            text=f"Confluence shows an inline preview of {pdf_relpath}",
+        )
+
         doc = pymupdf.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)  # pyright: ignore[reportUnknownMemberType]
         assert isinstance(page, pymupdf.Page)
@@ -102,9 +114,9 @@ class _ViewPDF(Image):
         pix.save(generated_image_path)  # pyright: ignore[reportUnknownMemberType]
 
         self.arguments[0] = str(
-            object=generated_image_path.relative_to(env.srcdir)
+            object=generated_image_path.relative_to(env.srcdir),
         )
-        return super().run()
+        return [*emphasised_text, *super().run()]
 
 
 def _link_role(

@@ -40,7 +40,7 @@ def test_confluence_viewpdf(
 
     source_file.write_text(
         data=index_rst_template.format(
-            link=confluencebuilder_directive_source,
+            pdf=confluencebuilder_directive_source,
         ),
     )
 
@@ -61,7 +61,7 @@ def test_confluence_viewpdf(
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(link=docutils_directive_source),
+        data=index_rst_template.format(pdf=docutils_directive_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()

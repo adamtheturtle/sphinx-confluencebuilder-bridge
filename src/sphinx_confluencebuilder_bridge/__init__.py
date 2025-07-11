@@ -3,12 +3,16 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+from collections.abc import Sequence
+from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
+import pymupdf
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
+from docutils.parsers.rst.directives.images import Image
 from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
@@ -62,6 +66,33 @@ class _Contents(Contents):
             "this-will-duplicate-information-and-it-is-still-useful-here"
         ]
         return list(super().run())
+
+
+class _ViewPDF(Image):
+    """A node to represent a PDF link in the HTML builder.
+
+    This is used by the ``.. confluence_viewpdf::`` directive.
+    """
+
+    def run(self) -> Sequence[Node]:
+        env = self.state.document.settings.env
+        pdf_relpath = self.arguments[0]
+
+        src_pdf_path = Path(env.srcdir) / pdf_relpath
+        out_dir = Path(env.app.outdir) / "_images" / "_pdf_renders"
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        image_filename = src_pdf_path.stem + ".png"
+        out_path = out_dir / image_filename
+        assert not out_path.exists()
+
+        doc = pymupdf.open(filename=src_pdf_path)
+        page = doc.load_page(page_id=0)
+        pix = page.get_pixmap(dpi=150)
+        pix.save(out_path)
+
+        self.arguments[0] = str(object=out_path.relative_to(env.app.outdir))
+        return super().run()
 
 
 def _link_role(
@@ -166,6 +197,7 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     ):
         return
     app.add_directive(name="confluence_toc", cls=_Contents)
+    app.add_directive(name="confluence_viewpdf", cls=_ViewPDF)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)
     app.add_role(name="confluence_mention", role=_mention_role)

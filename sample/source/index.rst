@@ -54,6 +54,11 @@ Output
 .. confluence_toc::
    :max-level: 1
 
+``confluence_viewpdf``
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. confluence_viewpdf:: meta.pdf
+
 Supported roles
 ---------------
 

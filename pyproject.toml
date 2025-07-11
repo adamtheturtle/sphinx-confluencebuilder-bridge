@@ -283,7 +283,7 @@ pep621_dev_dependency_groups = [
 ]
 
 [tool.deptry.package_module_name_map]
-PyMuPDF = "pymupdf"
+PyMuPDF = "fitz"
 
 [tool.pyproject-fmt]
 indent = 4

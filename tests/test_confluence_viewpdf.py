@@ -24,7 +24,6 @@ def test_confluence_viewpdf(
         src=pdf_path,
         dst=source_directory / "example.pdf",
     )
-    (source_directory / "example.png").touch()
 
     source_file = source_directory / "index.rst"
     index_rst_template = dedent(
@@ -69,12 +68,12 @@ def test_confluence_viewpdf(
         source_directory / "index.rst",
         source_directory / "conf.py",
         source_directory / "example.pdf",
-        source_directory / "example.png",
     }
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
+    (source_directory / "example.png").touch()
     source_file.write_text(
         data=index_rst_template.format(pdf=docutils_directive_source),
     )

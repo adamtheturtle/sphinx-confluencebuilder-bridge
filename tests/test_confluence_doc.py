@@ -42,22 +42,20 @@ def test_confluence_doc(
         """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
         :confluence_doc:`other`
         """,
     )
 
-    docutils_directive_source = dedent(
+    docutils_role_source = dedent(
         text="""\
         :doc:`other`
         """,
     )
 
     source_file.write_text(
-        data=index_rst_template.format(
-            link=confluencebuilder_directive_source,
-        ),
+        data=index_rst_template.format(link=confluencebuilder_role_source),
     )
 
     app = make_app(
@@ -73,17 +71,17 @@ def test_confluence_doc(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(link=docutils_directive_source),
+        data=index_rst_template.format(link=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    docutils_directive_html = (app.outdir / "index.html").read_text()
+    docutils_role_html = (app.outdir / "index.html").read_text()
 
-    assert confluencebuilder_directive_html == docutils_directive_html
+    assert confluencebuilder_role_html == docutils_role_html

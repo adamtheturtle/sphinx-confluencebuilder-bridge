@@ -28,7 +28,7 @@ def test_not_html(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
 
@@ -36,7 +36,7 @@ def test_not_html(
             """,
     )
 
-    docutils_directive_source = dedent(
+    docutils_role_source = dedent(
         text="""\
             `@eloise.red <https://example.com/wiki/people/1234a>`_
 
@@ -46,7 +46,7 @@ def test_not_html(
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            mention=confluencebuilder_role_source,
         ),
     )
 
@@ -74,7 +74,7 @@ def test_not_html(
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(mention=docutils_directive_source),
+        data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
@@ -111,7 +111,7 @@ def test_translatable_builders(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
             """,
@@ -119,7 +119,7 @@ def test_translatable_builders(
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            mention=confluencebuilder_role_source,
         ),
     )
 

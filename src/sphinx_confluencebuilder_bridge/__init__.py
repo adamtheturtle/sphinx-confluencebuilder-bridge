@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
-import pymupdf
+import pymupdf  # pyright: ignore[reportMissingTypeStubs]
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
@@ -96,10 +96,10 @@ class _ViewPDF(Image):
         )
 
         doc = pymupdf.open(filename=src_pdf_path)
-        page = doc.load_page(page_id=0)
+        page = doc.load_page(page_id=0)  # pyright: ignore[reportUnknownMemberType]
         assert isinstance(page, pymupdf.Page)
-        pix = page.get_pixmap(dpi=150)
-        pix.save(generated_image_path)
+        pix = page.get_pixmap(dpi=150)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType, reportAttributeAccessIssue]
+        pix.save(generated_image_path)  # pyright: ignore[reportUnknownMemberType]
 
         self.arguments[0] = str(
             object=generated_image_path.relative_to(env.srcdir)

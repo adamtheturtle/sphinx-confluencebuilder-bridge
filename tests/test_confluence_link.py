@@ -28,13 +28,13 @@ def test_confluence_link(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_link:`https://www.bbc.co.uk`
             """,
     )
 
-    docutils_directive_source = dedent(
+    docutils_role_source = dedent(
         text="""\
             `https://www.bbc.co.uk <https://www.bbc.co.uk>`_
             """,
@@ -42,7 +42,7 @@ def test_confluence_link(
 
     source_file.write_text(
         data=index_rst_template.format(
-            link=confluencebuilder_directive_source,
+            link=confluencebuilder_role_source,
         ),
     )
 
@@ -59,20 +59,20 @@ def test_confluence_link(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(link=docutils_directive_source),
+        data=index_rst_template.format(link=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    docutils_directive_html = (app.outdir / "index.html").read_text()
+    docutils_role_html = (app.outdir / "index.html").read_text()
 
-    assert confluencebuilder_directive_html == docutils_directive_html
+    assert confluencebuilder_role_html == docutils_role_html
 
 
 def test_linkcheck(

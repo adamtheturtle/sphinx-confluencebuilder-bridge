@@ -30,13 +30,13 @@ def test_confluence_mention_with_user_id(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_mention:`1234a`
             """,
     )
 
-    docutils_directive_source = dedent(
+    docutils_role_source = dedent(
         text="""\
             `@1234a <https://example.com/wiki/people/1234a>`_
             """,
@@ -44,7 +44,7 @@ def test_confluence_mention_with_user_id(
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            mention=confluencebuilder_role_source,
         ),
     )
 
@@ -62,20 +62,20 @@ def test_confluence_mention_with_user_id(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(mention=docutils_directive_source),
+        data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    docutils_directive_html = (app.outdir / "index.html").read_text()
+    docutils_role_html = (app.outdir / "index.html").read_text()
 
-    assert confluencebuilder_directive_html == docutils_directive_html
+    assert confluencebuilder_role_html == docutils_role_html
 
 
 def test_confluence_mention_with_user_identifier(
@@ -97,13 +97,13 @@ def test_confluence_mention_with_user_identifier(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
             """,
     )
 
-    docutils_directive_source = dedent(
+    docutils_role_source = dedent(
         text="""\
             `@eloise.red <https://example.com/wiki/people/1234a>`_
             """,
@@ -111,7 +111,7 @@ def test_confluence_mention_with_user_identifier(
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            mention=confluencebuilder_role_source,
         ),
     )
 
@@ -132,20 +132,20 @@ def test_confluence_mention_with_user_identifier(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(mention=docutils_directive_source),
+        data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    docutils_directive_html = (app.outdir / "index.html").read_text()
+    docutils_role_html = (app.outdir / "index.html").read_text()
 
-    assert confluencebuilder_directive_html == docutils_directive_html
+    assert confluencebuilder_role_html == docutils_role_html
 
 
 def test_confluence_mention_with_user_identifier_not_in_mentions(
@@ -167,13 +167,13 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
             """,
     )
 
-    docutils_directive_source = dedent(
+    docutils_role_source = dedent(
         text="""\
             `@eloise.red <https://example.com/wiki/people/eloise.red>`_
             """,
@@ -181,7 +181,7 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            mention=confluencebuilder_role_source,
         ),
     )
 
@@ -200,20 +200,20 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
     source_file.write_text(
-        data=index_rst_template.format(mention=docutils_directive_source),
+        data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
 
-    docutils_directive_html = (app.outdir / "index.html").read_text()
+    docutils_role_html = (app.outdir / "index.html").read_text()
 
-    assert confluencebuilder_directive_html == docutils_directive_html
+    assert confluencebuilder_role_html == docutils_role_html
 
 
 def test_server_url_not_given(
@@ -234,7 +234,7 @@ def test_server_url_not_given(
             """,
     )
 
-    confluencebuilder_directive_source = dedent(
+    confluencebuilder_role_source = dedent(
         text="""\
             :confluence_mention:`eloise.red`
             """,
@@ -242,7 +242,7 @@ def test_server_url_not_given(
 
     source_file.write_text(
         data=index_rst_template.format(
-            mention=confluencebuilder_directive_source,
+            mention=confluencebuilder_role_source,
         ),
     )
 

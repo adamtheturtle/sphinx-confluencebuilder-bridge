@@ -96,9 +96,9 @@ class _ViewPDF(Figure):
 
         src_pdf_path = Path(env.srcdir) / pdf_relpath
         generated_images_path = Path(env.srcdir) / "_generated_images"
-        generated_images_path.mkdir(parents=True, exist_ok=True)
         generated_image_path = generated_images_path / pdf_relpath
         generated_image_path = generated_image_path.with_suffix(suffix=".png")
+        generated_image_path.parent.mkdir(parents=True, exist_ok=True)
 
         doc = fitz.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)  # pyright: ignore[reportUnknownMemberType]

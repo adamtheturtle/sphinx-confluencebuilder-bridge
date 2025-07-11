@@ -3,6 +3,7 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+import shutil
 import uuid
 from collections.abc import Sequence
 from pathlib import Path
@@ -69,6 +70,14 @@ class _Contents(Contents):
         return list(super().run())
 
 
+def _cleanup_generated_images(
+    app: Sphinx,
+    _exception: BaseException | None,
+) -> None:
+    generated_dir = Path(app.env.srcdir) / "_generated_images"
+    shutil.rmtree(generated_dir, ignore_errors=True)
+
+
 class _ViewPDF(Image):
     """A node to represent a PDF link in the HTML builder.
 
@@ -80,7 +89,7 @@ class _ViewPDF(Image):
         pdf_relpath = self.arguments[0]
 
         src_pdf_path = Path(env.srcdir) / pdf_relpath
-        generated_images_path = src_pdf_path.parent / "_generated_images"
+        generated_images_path = Path(env.srcdir) / "_generated_images"
         generated_images_path.mkdir(parents=True, exist_ok=True)
         generated_image_path = (
             generated_images_path / f"image-{uuid.uuid4().hex}.jpeg"
@@ -88,6 +97,7 @@ class _ViewPDF(Image):
 
         doc = pymupdf.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)
+        assert isinstance(page, pymupdf.Page)
         pix = page.get_pixmap(dpi=150)
         pix.save(generated_image_path)
 
@@ -203,6 +213,7 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)
     app.add_role(name="confluence_mention", role=_mention_role)
+    app.connect("build-finished", _cleanup_generated_images)
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:

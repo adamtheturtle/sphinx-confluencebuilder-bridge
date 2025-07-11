@@ -218,7 +218,7 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)
     app.add_role(name="confluence_mention", role=_mention_role)
-    app.connect("build-finished", _cleanup_generated_images)
+    app.connect(event="build-finished", callback=_cleanup_generated_images)
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:

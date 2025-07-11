@@ -106,9 +106,8 @@ class _ViewPDF(Figure):
         pix = page.get_pixmap(dpi=150)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType, reportAttributeAccessIssue]
         pix.save(generated_image_path)  # pyright: ignore[reportUnknownMemberType]
 
-        self.arguments[0] = str(
-            object=generated_image_path.relative_to(env.srcdir),
-        )
+        relative_path = generated_image_path.relative_to(env.srcdir)
+        self.arguments[0] = relative_path.as_posix()
         return super().run()
 
 

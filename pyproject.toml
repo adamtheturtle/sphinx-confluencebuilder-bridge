@@ -282,6 +282,9 @@ pep621_dev_dependency_groups = [
     "release",
 ]
 
+[tool.deptry.package_module_name_map]
+PyMuPDF = "pymupdf"
+
 [tool.pyproject-fmt]
 indent = 4
 keep_full_version = true

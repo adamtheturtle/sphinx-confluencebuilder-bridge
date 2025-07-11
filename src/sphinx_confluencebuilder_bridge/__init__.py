@@ -79,19 +79,18 @@ class _ViewPDF(Image):
         pdf_relpath = self.arguments[0]
 
         src_pdf_path = Path(env.srcdir) / pdf_relpath
-        out_dir = Path(env.app.outdir) / "_images" / "_pdf_renders"
-        out_dir.mkdir(parents=True, exist_ok=True)
-
-        image_filename = src_pdf_path.stem + ".png"
-        out_path = out_dir / image_filename
-        assert not out_path.exists()
+        generated_images_path = src_pdf_path.parent / "_generated_images"
+        generated_images_path.mkdir(parents=True, exist_ok=True)
+        generated_image_path = generated_images_path / "image.jpeg"
 
         doc = pymupdf.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)
         pix = page.get_pixmap(dpi=150)
-        pix.save(out_path)
+        pix.save(generated_image_path)
 
-        self.arguments[0] = str(object=out_path.relative_to(env.app.outdir))
+        self.arguments[0] = str(
+            object=generated_image_path.relative_to(env.srcdir)
+        )
         return super().run()
 
 

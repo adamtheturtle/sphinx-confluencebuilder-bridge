@@ -3,12 +3,17 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+import shutil
+from collections.abc import Sequence
+from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
+import fitz  # pyright: ignore[reportMissingTypeStubs]
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
+from docutils.parsers.rst.directives.images import Figure
 from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
@@ -62,6 +67,48 @@ class _Contents(Contents):
             "this-will-duplicate-information-and-it-is-still-useful-here"
         ]
         return list(super().run())
+
+
+def _cleanup_generated_images(
+    app: Sphinx,
+    _exception: BaseException | None,
+) -> None:
+    """
+    Clean up the generated images after the build is finished.
+    """
+    generated_dir = Path(app.env.srcdir) / "_generated_images"
+    shutil.rmtree(generated_dir, ignore_errors=True)
+
+
+class _ViewPDF(Figure):
+    """A node to represent a PDF link in the HTML builder.
+
+    This is used by the ``.. confluence_viewpdf::`` directive.
+    """
+
+    def run(self) -> Sequence[Node]:
+        """
+        Show an inline image which is a screenshot of the first page of the
+        PDF.
+        """
+        env = self.state.document.settings.env
+        pdf_relpath = self.arguments[0]
+
+        src_pdf_path = Path(env.srcdir) / pdf_relpath
+        generated_images_path = Path(env.srcdir) / "_generated_images"
+        generated_images_path.mkdir(parents=True, exist_ok=True)
+        generated_image_path = generated_images_path / pdf_relpath
+        generated_image_path = generated_image_path.with_suffix(suffix=".png")
+
+        doc = fitz.open(filename=src_pdf_path)
+        page = doc.load_page(page_id=0)  # pyright: ignore[reportUnknownMemberType]
+        assert isinstance(page, fitz.Page)
+        pix = page.get_pixmap(dpi=150)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType, reportAttributeAccessIssue]
+        pix.save(generated_image_path)  # pyright: ignore[reportUnknownMemberType]
+
+        relative_path = generated_image_path.relative_to(env.srcdir)
+        self.arguments[0] = relative_path.as_posix()
+        return super().run()
 
 
 def _link_role(
@@ -166,9 +213,11 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     ):
         return
     app.add_directive(name="confluence_toc", cls=_Contents)
+    app.add_directive(name="confluence_viewpdf", cls=_ViewPDF)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)
     app.add_role(name="confluence_mention", role=_mention_role)
+    app.connect(event="build-finished", callback=_cleanup_generated_images)
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:

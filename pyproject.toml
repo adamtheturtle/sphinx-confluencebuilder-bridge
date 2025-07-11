@@ -37,6 +37,7 @@ dynamic = [
 ]
 dependencies = [
     "docutils>=0.19",
+    "pymupdf>=1.26.3",
     "sphinx>=8.2.3",
 ]
 optional-dependencies.dev = [
@@ -60,6 +61,7 @@ optional-dependencies.dev = [
     "pyroma==4.3.3",
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
+    "reportlab==4.4.2",
     "ruff==0.12.2",
     # We add shellcheck-py not only for shell scripts and shell code blocks,
     # but also because having it installed means that ``actionlint-py`` will
@@ -279,6 +281,10 @@ pep621_dev_dependency_groups = [
     "dev",
     "release",
 ]
+
+[tool.deptry.package_module_name_map]
+PyMuPDF = "fitz"
+pymupdf = "fitz"
 
 [tool.pyproject-fmt]
 indent = 4

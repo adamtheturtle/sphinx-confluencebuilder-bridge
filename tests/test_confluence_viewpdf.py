@@ -65,8 +65,7 @@ def test_confluence_viewpdf(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
     # Check that we do not pollute the source directory with generated files.
-    assert set(source_directory.glob(pattern="**")) == {
-        source_directory,
+    assert set(source_directory.iterdir()) == {
         source_directory / "index.rst",
         source_directory / "conf.py",
         source_directory / "example.pdf",

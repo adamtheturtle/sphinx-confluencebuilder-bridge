@@ -16,13 +16,14 @@ def test_confluence_viewpdf(
     The ``..confluence_viewpdf::`` directive renders like a normal PDF link.
     """
     source_directory = tmp_path / "source"
+    source_data_directory = source_directory / "data"
+    source_data_directory.mkdir(parents=True)
     build_directory = tmp_path / "build"
-    source_directory.mkdir()
     (source_directory / "conf.py").touch()
     pdf_path = Path(__file__).parent / "data" / "example.pdf"
     shutil.copyfile(
         src=pdf_path,
-        dst=source_directory / "example.pdf",
+        dst=source_data_directory / "example.pdf",
     )
 
     source_file = source_directory / "index.rst"
@@ -34,7 +35,7 @@ def test_confluence_viewpdf(
 
     confluencebuilder_directive_source = dedent(
         text="""\
-            .. confluence_viewpdf:: example.pdf
+            .. confluence_viewpdf:: data/example.pdf
             """,
     )
 
@@ -67,7 +68,10 @@ def test_confluence_viewpdf(
     assert set(source_directory.iterdir()) == {
         source_directory / "index.rst",
         source_directory / "conf.py",
-        source_directory / "example.pdf",
+        source_directory / "data",
+    }
+    assert set((source_directory / "data").iterdir()) == {
+        source_data_directory / "example.pdf",
     }
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()

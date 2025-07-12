@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
-import fitz  # pyright: ignore[reportMissingTypeStubs]
+import pymupdf  # pyright: ignore[reportMissingTypeStubs]
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
@@ -100,9 +100,9 @@ class _ViewPDF(Figure):
         generated_image_path = generated_image_path.with_suffix(suffix=".png")
         generated_image_path.parent.mkdir(parents=True, exist_ok=True)
 
-        doc = fitz.open(filename=src_pdf_path)
+        doc = pymupdf.open(filename=src_pdf_path)
         page = doc.load_page(page_id=0)  # pyright: ignore[reportUnknownMemberType]
-        assert isinstance(page, fitz.Page)
+        assert isinstance(page, pymupdf.Page)
         pix = page.get_pixmap(dpi=150)  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType, reportAttributeAccessIssue]
         pix.save(generated_image_path)  # pyright: ignore[reportUnknownMemberType]
 

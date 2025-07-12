@@ -3,6 +3,7 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+import os
 import shutil
 from collections.abc import Sequence
 from pathlib import Path
@@ -70,10 +71,12 @@ class _Contents(Contents):
 
 
 def _generated_images_directory(env: "BuildEnvironment") -> Path:
+    """Get the path to the directory where generated images are stored.
+
+    Use a unique directory for each parallel build, so that the images
+    and their clean up do not conflict with each other.
     """
-    Get the path to the directory where generated images are stored.
-    """
-    return Path(env.srcdir) / "_generated_images"
+    return Path(env.srcdir) / f"_generated_images-pid-{os.getpid()}"
 
 
 def _cleanup_generated_images(

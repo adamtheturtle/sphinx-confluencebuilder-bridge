@@ -57,7 +57,7 @@ Output
 ``confluence_viewpdf``
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. confluence_viewpdf:: meta.pdf
+.. confluence_viewpdf:: _static/meta.pdf
 
 Supported roles
 ---------------

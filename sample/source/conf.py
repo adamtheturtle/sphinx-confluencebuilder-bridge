@@ -6,7 +6,6 @@ extensions = [
     "sphinxcontrib.confluencebuilder",
     "sphinx_confluencebuilder_bridge",
     "sphinx_toolbox.rest_example",
-    "sphinx_simplepdf",
 ]
 
 # We do Furo specific work, so we use the Furo theme.

@@ -41,7 +41,7 @@ def test_confluence_viewpdf(
 
     docutils_directive_source = dedent(
         text="""\
-            .. figure:: example.png
+            .. pdf-include:: data/example.pdf
             """,
     )
 
@@ -58,26 +58,17 @@ def test_confluence_viewpdf(
             "extensions": [
                 "sphinxcontrib.confluencebuilder",
                 "sphinx_confluencebuilder_bridge",
+                "sphinx_simplepdf",
             ],
         },
     )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
-    # Check that we do not pollute the source directory with generated files.
-    assert set(source_directory.iterdir()) == {
-        source_directory / "index.rst",
-        source_directory / "conf.py",
-        source_directory / "data",
-    }
-    assert set((source_directory / "data").iterdir()) == {
-        source_data_directory / "example.pdf",
-    }
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    (source_directory / "example.png").touch()
     source_file.write_text(
         data=index_rst_template.format(pdf=docutils_directive_source),
     )

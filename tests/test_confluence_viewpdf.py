@@ -41,7 +41,7 @@ def test_confluence_viewpdf(
 
     docutils_directive_source = dedent(
         text="""\
-            .. pdf-include:: _static/SimplePDF_test.pdf
+            .. pdf-include:: data/example.pdf
             """,
     )
 
@@ -56,7 +56,6 @@ def test_confluence_viewpdf(
         builddir=build_directory,
         confoverrides={
             "extensions": [
-                "sphinx_simplepdf",
                 "sphinxcontrib.confluencebuilder",
                 "sphinx_confluencebuilder_bridge",
             ],
@@ -72,7 +71,15 @@ def test_confluence_viewpdf(
     source_file.write_text(
         data=index_rst_template.format(pdf=docutils_directive_source),
     )
-    app = make_app(srcdir=source_directory)
+    app = make_app(
+        srcdir=source_directory,
+        builddir=build_directory,
+        confoverrides={
+            "extensions": [
+                "sphinx_simplepdf",
+            ],
+        },
+    )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()

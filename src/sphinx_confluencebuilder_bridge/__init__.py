@@ -69,6 +69,13 @@ class _Contents(Contents):
         return list(super().run())
 
 
+def _generated_images_directory(env: "BuildEnvironment") -> Path:
+    """
+    Get the path to the directory where generated images are stored.
+    """
+    return Path(env.srcdir) / "_generated_images"
+
+
 def _cleanup_generated_images(
     app: Sphinx,
     _exception: BaseException | None,
@@ -76,8 +83,8 @@ def _cleanup_generated_images(
     """
     Clean up the generated images after the build is finished.
     """
-    generated_dir = Path(app.env.srcdir) / "_generated_images"
-    shutil.rmtree(generated_dir, ignore_errors=True)
+    generated_images_directory = _generated_images_directory(env=app.env)
+    shutil.rmtree(generated_images_directory, ignore_errors=True)
 
 
 class _ViewPDF(Figure):
@@ -95,8 +102,8 @@ class _ViewPDF(Figure):
         pdf_relpath = self.arguments[0]
 
         src_pdf_path = Path(env.srcdir) / pdf_relpath
-        generated_images_path = Path(env.srcdir) / "_generated_images"
-        generated_image_path = generated_images_path / pdf_relpath
+        generated_images_directory = _generated_images_directory(env=env)
+        generated_image_path = generated_images_directory / pdf_relpath
         generated_image_path = generated_image_path.with_suffix(suffix=".png")
         generated_image_path.parent.mkdir(parents=True, exist_ok=True)
 

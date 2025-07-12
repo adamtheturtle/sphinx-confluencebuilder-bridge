@@ -18,7 +18,6 @@ def test_confluence_viewpdf(
     source_directory = tmp_path / "source"
     source_data_directory = source_directory / "data"
     source_data_directory.mkdir(parents=True)
-    build_directory = tmp_path / "build"
     (source_directory / "conf.py").touch()
     pdf_path = Path(__file__).parent / "data" / "example.pdf"
     shutil.copyfile(
@@ -53,7 +52,6 @@ def test_confluence_viewpdf(
 
     app = make_app(
         srcdir=source_directory,
-        builddir=build_directory,
         confoverrides={
             "extensions": [
                 "sphinxcontrib.confluencebuilder",
@@ -73,7 +71,6 @@ def test_confluence_viewpdf(
     )
     app = make_app(
         srcdir=source_directory,
-        builddir=build_directory,
         confoverrides={
             "extensions": [
                 "sphinx_simplepdf",

@@ -43,7 +43,8 @@ The following directives are supported:
    * The only supported option is `max-level <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-option-confluence_toc-max-level>`_.
 
 * ``confluence_viewpdf``
-   * This shows an inline image which is a screenshot of the first page of the PDF.
+   * HTML builder only.
+   * Requires the PDF to be in a directory specified in `html_static_path <https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_static_path>`_.
 
 Supported roles
 ---------------

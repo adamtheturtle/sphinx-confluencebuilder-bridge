@@ -37,8 +37,8 @@ dynamic = [
 ]
 dependencies = [
     "docutils>=0.19",
-    "pymupdf>=1.26.3",
     "sphinx>=8.2.3",
+    "sphinx-simplepdf>=1.6.0",
 ]
 optional-dependencies.dev = [
     "actionlint-py==1.7.7.23",
@@ -282,9 +282,6 @@ pep621_dev_dependency_groups = [
     "release",
 ]
 
-[tool.deptry.package_module_name_map]
-pymupdf = "pymupdf"
-
 [tool.pyproject-fmt]
 indent = 4
 keep_full_version = true
@@ -356,6 +353,7 @@ ignore_names = [
     "html_show_copyright",
     "html_show_sourcelink",
     "html_show_sphinx",
+    "html_static_path",
     "html_theme",
     "html_theme_options",
     "html_title",

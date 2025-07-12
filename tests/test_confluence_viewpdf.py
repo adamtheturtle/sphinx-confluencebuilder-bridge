@@ -18,7 +18,6 @@ def test_confluence_viewpdf(
     source_directory = tmp_path / "source"
     source_data_directory = source_directory / "data"
     source_data_directory.mkdir(parents=True)
-    build_directory = tmp_path / "build"
     (source_directory / "conf.py").touch()
     pdf_path = Path(__file__).parent / "data" / "example.pdf"
     shutil.copyfile(
@@ -41,7 +40,7 @@ def test_confluence_viewpdf(
 
     docutils_directive_source = dedent(
         text="""\
-            .. figure:: example.png
+            .. pdf-include:: data/example.pdf
             """,
     )
 
@@ -53,7 +52,6 @@ def test_confluence_viewpdf(
 
     app = make_app(
         srcdir=source_directory,
-        builddir=build_directory,
         confoverrides={
             "extensions": [
                 "sphinxcontrib.confluencebuilder",
@@ -64,24 +62,21 @@ def test_confluence_viewpdf(
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()
-    # Check that we do not pollute the source directory with generated files.
-    assert set(source_directory.iterdir()) == {
-        source_directory / "index.rst",
-        source_directory / "conf.py",
-        source_directory / "data",
-    }
-    assert set((source_directory / "data").iterdir()) == {
-        source_data_directory / "example.pdf",
-    }
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    (source_directory / "example.png").touch()
     source_file.write_text(
         data=index_rst_template.format(pdf=docutils_directive_source),
     )
-    app = make_app(srcdir=source_directory)
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinx_simplepdf",
+            ],
+        },
+    )
     app.build()
     assert app.statuscode == 0
     assert not app.warning.getvalue()

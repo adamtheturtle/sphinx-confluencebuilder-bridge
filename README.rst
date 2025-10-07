@@ -1,4 +1,4 @@
-|Build Status| |codecov| |PyPI|
+|Build Status| |PyPI|
 
 Sphinx Confluence Builder Bridge
 ================================
@@ -67,8 +67,6 @@ See `CONTRIBUTING.rst <./CONTRIBUTING.rst>`_.
 
 .. |Build Status| image:: https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge/actions/workflows/ci.yml/badge.svg?branch=main
    :target: https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge/actions
-.. |codecov| image:: https://codecov.io/gh/adamtheturtle/sphinx-confluencebuilder-bridge/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/adamtheturtle/sphinx-confluencebuilder-bridge
 .. |PyPI| image:: https://badge.fury.io/py/sphinx-confluencebuilder-bridge.svg
    :target: https://badge.fury.io/py/sphinx-confluencebuilder-bridge
 .. |minimum-python-version| replace:: 3.11

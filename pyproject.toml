@@ -54,7 +54,7 @@ optional-dependencies.dev = [
     "myst-parser==4.0.1",
     "pre-commit==4.3.0",
     "pylint[spelling]==3.3.9",
-    "pyproject-fmt==2.7.0",
+    "pyproject-fmt==2.10.0",
     "pyright==1.1.406",
     "pyroma==5.0",
     "pytest==8.4.2",

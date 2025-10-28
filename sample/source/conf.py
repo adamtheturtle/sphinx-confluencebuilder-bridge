@@ -11,7 +11,9 @@ extensions = [
 # We do Furo specific work, so we use the Furo theme.
 html_theme = "furo"
 html_theme_options = {
-    "top_of_page_buttons": ["view", "edit"],
+    "source_repository": "https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge/",
+    "source_branch": "main",
+    "source_directory": "sample/source/",
 }
 
 html_static_path = ["_static"]

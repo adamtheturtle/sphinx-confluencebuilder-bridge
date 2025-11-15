@@ -3,6 +3,7 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+from importlib.metadata import version
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
@@ -187,4 +188,10 @@ def setup(app: Sphinx) -> ExtensionMetadata:
         event="builder-inited",
         callback=_connect_confluence_to_html_builder,
     )
-    return {"parallel_read_safe": True, "parallel_write_safe": True}
+    return {
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+        "version": version(
+            distribution_name="sphinx-confluencebuilder-bridge"
+        ),
+    }

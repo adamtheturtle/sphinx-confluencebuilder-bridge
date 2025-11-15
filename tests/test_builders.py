@@ -3,11 +3,15 @@ Tests for using various builders.
 """
 
 from collections.abc import Callable
+from importlib.metadata import version
 from pathlib import Path
 from textwrap import dedent
+from unittest.mock import Mock
 
 import pytest
 from sphinx.testing.util import SphinxTestApp
+
+import sphinx_confluencebuilder_bridge
 
 
 def test_not_html(
@@ -142,3 +146,18 @@ def test_translatable_builders(
     assert app.statuscode == 0
     assert not app.warning.getvalue()
     app.cleanup()
+
+
+def test_setup() -> None:
+    """
+    The setup function returns the correct metadata.
+    """
+    app = Mock()
+    result = sphinx_confluencebuilder_bridge.setup(app=app)
+    assert result == {
+        "parallel_read_safe": True,
+        "parallel_write_safe": True,
+        "version": version(
+            distribution_name="sphinx-confluencebuilder-bridge",
+        ),
+    }

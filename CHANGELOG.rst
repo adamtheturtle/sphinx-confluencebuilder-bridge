@@ -6,6 +6,9 @@ Changelog
 Next
 ----
 
+2025.11.16
+----------
+
 Give version in extension metadata.
 
 2025.07.12.1

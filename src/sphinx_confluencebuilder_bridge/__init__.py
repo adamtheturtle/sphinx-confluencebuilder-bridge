@@ -128,7 +128,6 @@ def _mention_role(
 
 
 def _doc_role(
-    # We allow multiple unused function arguments, to match the Sphinx API.
     role: str,
     rawtext: str,
     text: str,

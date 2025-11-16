@@ -3,12 +3,13 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+from collections.abc import Sequence
 from importlib.metadata import version
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
 from docutils import nodes
-from docutils.nodes import Node
+from docutils.nodes import Node, system_message
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
@@ -131,22 +132,17 @@ def _doc_role(
     role: str,
     rawtext: str,
     text: str,
-    lineno: str,
+    lineno: int,
     inliner: Inliner,
-) -> tuple[list[Node], list[SystemMessage]]:
+) -> tuple[list[Node], Sequence[system_message]]:
     """
     This role acts just like the ``:doc:`` role, linking to other documents in
     this project.
     """
     env: BuildEnvironment = inliner.document.settings.env
-    # Get the standard domain's doc role and invoke it directly
-    # This ensures proper warning generation for missing documents
     std_domain = env.get_domain("std")
     doc_role = std_domain.role("doc")
-    assert doc_role is not None, (
-        "Standard domain's 'doc' role should always exist"
-    )
-    # Invoke the standard doc role with all parameters
+    assert doc_role is not None
     return doc_role(role, rawtext, text, lineno, inliner, {}, [])
 
 

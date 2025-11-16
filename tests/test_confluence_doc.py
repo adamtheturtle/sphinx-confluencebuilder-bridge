@@ -120,7 +120,6 @@ def test_confluence_doc_missing_document_warning(
         """,
     )
 
-    # Test with confluence_doc role
     source_file.write_text(
         data=index_rst_template.format(link=confluencebuilder_role_source),
     )
@@ -138,7 +137,6 @@ def test_confluence_doc_missing_document_warning(
     confluencebuilder_warnings = app.warning.getvalue()
     app.cleanup()
 
-    # Test with standard doc role for comparison
     source_file.write_text(
         data=index_rst_template.format(link=docutils_role_source),
     )
@@ -146,15 +144,6 @@ def test_confluence_doc_missing_document_warning(
     app.build()
     docutils_warnings = app.warning.getvalue()
 
-    # Both should produce warnings about the missing document
-    assert "nonexistent" in confluencebuilder_warnings
-    assert "nonexistent" in docutils_warnings
-    # Both warnings should be similar (both mention unknown/missing document)
-    assert (
-        "unknown document" in confluencebuilder_warnings.lower()
-        or "missing" in confluencebuilder_warnings.lower()
-    )
-    assert (
-        "unknown document" in docutils_warnings.lower()
-        or "missing" in docutils_warnings.lower()
-    )
+    assert docutils_warnings
+    assert confluencebuilder_warnings
+    assert docutils_warnings == confluencebuilder_warnings

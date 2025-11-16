@@ -139,13 +139,20 @@ def _doc_role(
     This role acts just like the ``:doc:`` role, linking to other documents in
     this project.
     """
-    del role
-    del rawtext
-    del lineno
     env: BuildEnvironment = inliner.document.settings.env
-    field = Field(name="")
-    node = field.make_xref(rolename="doc", domain="std", target=text, env=env)
-    return [node], []
+    # Get the standard domain's doc role and invoke it directly
+    # This ensures proper warning generation for missing documents
+    std_domain = env.get_domain("std")
+    doc_role = std_domain.role("doc")
+    if doc_role is None:
+        # Fallback to the old implementation if doc role is not available
+        field = Field(name="")
+        node = field.make_xref(
+            rolename="doc", domain="std", target=text, env=env
+        )
+        return [node], []
+    # Invoke the standard doc role with all parameters
+    return doc_role(role, rawtext, text, lineno, inliner, {}, [])
 
 
 def _connect_confluence_to_html_builder(app: Sphinx) -> None:

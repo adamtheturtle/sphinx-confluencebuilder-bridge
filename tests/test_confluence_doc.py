@@ -85,3 +85,76 @@ def test_confluence_doc(
     docutils_role_html = (app.outdir / "index.html").read_text()
 
     assert confluencebuilder_role_html == docutils_role_html
+
+
+def test_confluence_doc_missing_document_warning(
+    tmp_path: Path,
+    make_app: Callable[..., SphinxTestApp],
+) -> None:
+    """The ``confluence_doc`` role warns when referencing a non-existent
+    document.
+
+    This should behave like the standard ``:doc:`` role.
+    """
+    source_directory = tmp_path / "source"
+    source_directory.mkdir()
+    (source_directory / "conf.py").touch()
+
+    source_file = source_directory / "index.rst"
+
+    index_rst_template = dedent(
+        text="""\
+        {link}
+        """,
+    )
+
+    confluencebuilder_role_source = dedent(
+        text="""\
+        :confluence_doc:`nonexistent`
+        """,
+    )
+
+    docutils_role_source = dedent(
+        text="""\
+        :doc:`nonexistent`
+        """,
+    )
+
+    # Test with confluence_doc role
+    source_file.write_text(
+        data=index_rst_template.format(link=confluencebuilder_role_source),
+    )
+
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+        },
+    )
+    app.build()
+    confluencebuilder_warnings = app.warning.getvalue()
+    app.cleanup()
+
+    # Test with standard doc role for comparison
+    source_file.write_text(
+        data=index_rst_template.format(link=docutils_role_source),
+    )
+    app = make_app(srcdir=source_directory)
+    app.build()
+    docutils_warnings = app.warning.getvalue()
+
+    # Both should produce warnings about the missing document
+    assert "nonexistent" in confluencebuilder_warnings
+    assert "nonexistent" in docutils_warnings
+    # Both warnings should be similar (both mention unknown/missing document)
+    assert (
+        "unknown document" in confluencebuilder_warnings.lower()
+        or "missing" in confluencebuilder_warnings.lower()
+    )
+    assert (
+        "unknown document" in docutils_warnings.lower()
+        or "missing" in docutils_warnings.lower()
+    )

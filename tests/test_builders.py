@@ -6,9 +6,10 @@ from collections.abc import Callable
 from importlib.metadata import version
 from pathlib import Path
 from textwrap import dedent
-from unittest.mock import Mock
+from unittest.mock import create_autospec
 
 import pytest
+from sphinx.application import Sphinx
 from sphinx.testing.util import SphinxTestApp
 
 import sphinx_confluencebuilder_bridge
@@ -152,7 +153,7 @@ def test_setup() -> None:
     """
     The setup function returns the correct metadata.
     """
-    app = Mock()
+    app = create_autospec(spec=Sphinx, instance=True)
     result = sphinx_confluencebuilder_bridge.setup(app=app)
     assert result == {
         "parallel_read_safe": True,

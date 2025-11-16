@@ -138,7 +138,7 @@ def _doc_role(
     This role acts just like the ``:doc:`` role, linking to other documents in
     this project.
     """
-    env: BuildEnvironment = inliner.document.settings.env
+    env = inliner.document.settings.env
     std_domain = env.get_domain("std")
     doc_role = std_domain.role("doc")
     assert doc_role is not None

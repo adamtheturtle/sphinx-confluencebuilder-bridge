@@ -7,6 +7,7 @@ from importlib.metadata import version
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
+from beartype import beartype
 from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
@@ -26,6 +27,7 @@ if TYPE_CHECKING:
     from sphinx.environment import BuildEnvironment
 
 
+@beartype
 class _Contents(Contents):
     """A directive to put a table of contents in the page.
 
@@ -68,12 +70,13 @@ class _Contents(Contents):
         return list(super().run())
 
 
+@beartype
 def _link_role(
     # We allow multiple unused function arguments, to match the Sphinx API.
     role: str,
     rawtext: str,
     text: str,
-    lineno: str,
+    lineno: int,
     inliner: Inliner,
 ) -> tuple[list[Node], list[SystemMessage]]:
     """A role to create a link.
@@ -90,12 +93,13 @@ def _link_role(
     return [node], []
 
 
+@beartype
 def _mention_role(
     # We allow multiple unused function arguments, to match the Sphinx API.
     role: str,
     rawtext: str,
     text: str,
-    lineno: str,
+    lineno: int,
     inliner: Inliner,
 ) -> tuple[list[Node], list[SystemMessage]]:
     """A role to create a mention link.
@@ -127,12 +131,13 @@ def _mention_role(
     return [node], []
 
 
+@beartype
 def _doc_role(
     # We allow multiple unused function arguments, to match the Sphinx API.
     role: str,
     rawtext: str,
     text: str,
-    lineno: str,
+    lineno: int,
     inliner: Inliner,
 ) -> tuple[list[Node], list[SystemMessage]]:
     """
@@ -148,6 +153,7 @@ def _doc_role(
     return [node], []
 
 
+@beartype
 def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     """
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
@@ -179,6 +185,7 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     app.add_role(name="confluence_mention", role=_mention_role)
 
 
+@beartype
 def setup(app: Sphinx) -> ExtensionMetadata:
     """
     Allow ``sphinx-confluencebuilder`` directives and roles to be used with the

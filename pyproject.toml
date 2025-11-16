@@ -35,6 +35,7 @@ dynamic = [
     "version",
 ]
 dependencies = [
+    "beartype>=0.22.5",
     "docutils>=0.19",
     "sphinx>=8.2.3",
     "sphinx-simplepdf>=1.6.0",

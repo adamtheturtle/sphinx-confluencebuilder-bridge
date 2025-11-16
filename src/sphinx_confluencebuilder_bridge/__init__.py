@@ -3,20 +3,20 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
+from collections.abc import Sequence
 from importlib.metadata import version
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
 from beartype import beartype
 from docutils import nodes
-from docutils.nodes import Node
+from docutils.nodes import Node, system_message
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
 from sphinx.errors import ExtensionError
-from sphinx.util.docfields import Field
 from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
 from sphinx_simplepdf.directives.pdfinclude import (  # pyright: ignore[reportMissingTypeStubs]
@@ -133,24 +133,21 @@ def _mention_role(
 
 @beartype
 def _doc_role(
-    # We allow multiple unused function arguments, to match the Sphinx API.
     role: str,
     rawtext: str,
     text: str,
     lineno: int,
     inliner: Inliner,
-) -> tuple[list[Node], list[SystemMessage]]:
+) -> tuple[list[Node], Sequence[system_message]]:
     """
     This role acts just like the ``:doc:`` role, linking to other documents in
     this project.
     """
-    del role
-    del rawtext
-    del lineno
-    env: BuildEnvironment = inliner.document.settings.env
-    field = Field(name="")
-    node = field.make_xref(rolename="doc", domain="std", target=text, env=env)
-    return [node], []
+    env = inliner.document.settings.env
+    std_domain = env.get_domain("std")
+    doc_role = std_domain.role("doc")
+    assert doc_role is not None
+    return doc_role(role, rawtext, text, lineno, inliner, {}, [])
 
 
 @beartype

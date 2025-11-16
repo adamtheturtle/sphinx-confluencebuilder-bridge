@@ -15,7 +15,6 @@ from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
 from sphinx.errors import ExtensionError
-from sphinx.util.docfields import Field
 from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
 from sphinx_simplepdf.directives.pdfinclude import (  # pyright: ignore[reportMissingTypeStubs]
@@ -144,13 +143,9 @@ def _doc_role(
     # This ensures proper warning generation for missing documents
     std_domain = env.get_domain("std")
     doc_role = std_domain.role("doc")
-    if doc_role is None:
-        # Fallback to the old implementation if doc role is not available
-        field = Field(name="")
-        node = field.make_xref(
-            rolename="doc", domain="std", target=text, env=env
-        )
-        return [node], []
+    assert doc_role is not None, (
+        "Standard domain's 'doc' role should always exist"
+    )
     # Invoke the standard doc role with all parameters
     return doc_role(role, rawtext, text, lineno, inliner, {}, [])
 

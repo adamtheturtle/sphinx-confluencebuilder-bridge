@@ -59,7 +59,7 @@ optional-dependencies.dev = [
     "pyroma==5.0",
     "pytest==9.0.1",
     "pytest-cov==7.0.0",
-    "reportlab==4.4.4",
+    "reportlab==4.4.5",
     "ruff==0.14.4",
     # We add shellcheck-py not only for shell scripts and shell code blocks,
     # but also because having it installed means that ``actionlint-py`` will

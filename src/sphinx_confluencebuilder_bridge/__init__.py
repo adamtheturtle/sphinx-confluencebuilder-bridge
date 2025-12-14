@@ -40,7 +40,7 @@ class _Contents(Contents):
     that.
     """
 
-    option_spec = Contents.option_spec or {}
+    option_spec = (Contents.option_spec or {}).copy()
     option_spec["max-level"] = directives.nonnegative_int
 
     def run(self) -> list[Node]:

@@ -4,6 +4,7 @@ from collections.abc import Callable
 from pathlib import Path
 from textwrap import dedent
 
+from docutils.parsers.rst.directives.parts import Contents
 from sphinx.testing.util import SphinxTestApp
 
 
@@ -187,3 +188,14 @@ def test_max_level(
     docutils_directive_html = (app.outdir / "index.html").read_text()
 
     assert confluencebuilder_directive_html == docutils_directive_html
+
+
+def test_contents_option_spec_not_mutated() -> None:
+    """Importing the custom directive should not mutate the option_spec of the
+    docutils contents directive.
+
+    This test relies on the shape of ``Contents.option_spec``
+    and only checks the one key which we modify at the time of writing.
+    """
+    assert Contents.option_spec is not None
+    assert "max-level" not in Contents.option_spec

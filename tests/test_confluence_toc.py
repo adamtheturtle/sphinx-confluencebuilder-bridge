@@ -192,7 +192,7 @@ def test_max_level(
 
 def test_contents_option_spec_not_mutated() -> None:
     """Importing the custom directive should not mutate the option_spec of the
-    docutils contents directive.
+    ``docutils.contents`` directive.
 
     This test relies on the shape of ``Contents.option_spec``
     and only checks the one key which we modify at the time of writing.

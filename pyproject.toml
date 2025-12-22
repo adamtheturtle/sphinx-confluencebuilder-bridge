@@ -68,7 +68,7 @@ optional-dependencies.dev = [
     "shfmt-py==3.12.0.2",
     "sphinx-lint==1.0.2",
     "sphinx-toolbox==4.1.0",
-    "sphinxcontrib-confluencebuilder==2.17.0",
+    "sphinxcontrib-confluencebuilder==2.17.1",
     "sphinxcontrib-spelling==8.0.2",
     "ty==0.0.5",
     "types-docutils==0.22.3.20251115",

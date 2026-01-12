@@ -126,6 +126,9 @@ def _mention_role(
         mention_id = text
     else:
         mention_id: str = users[text]
+    # Ensure server_url ends with a trailing slash for correct urljoin behavior
+    if not server_url.endswith("/"):
+        server_url = f"{server_url}/"
     link_url = urljoin(base=server_url, url=f"people/{mention_id}")
     node = nodes.reference(rawsource=rawtext, text=link_text, refuri=link_url)
     return [node], []

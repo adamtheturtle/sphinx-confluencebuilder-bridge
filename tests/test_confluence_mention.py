@@ -216,6 +216,143 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
     assert confluencebuilder_role_html == docutils_role_html
 
 
+def test_confluence_mention_with_custom_context_path(
+    tmp_path: Path,
+    make_app: Callable[..., SphinxTestApp],
+) -> None:
+    """
+    The ``:confluence_mention:`` role correctly handles a
+    ``confluence_server_url`` with a custom context path (not ``/wiki/``).
+    """
+    source_directory = tmp_path / "source"
+    source_directory.mkdir()
+    (source_directory / "conf.py").touch()
+
+    source_file = source_directory / "index.rst"
+    index_rst_template = dedent(
+        text="""\
+            {mention}
+            """,
+    )
+
+    confluencebuilder_role_source = dedent(
+        text="""\
+            :confluence_mention:`1234a`
+            """,
+    )
+
+    # The expected URL should use the custom context path, not /wiki/
+    docutils_role_source = dedent(
+        text="""\
+            `@1234a <https://example.com/confluence/people/1234a>`_
+            """,
+    )
+
+    source_file.write_text(
+        data=index_rst_template.format(
+            mention=confluencebuilder_role_source,
+        ),
+    )
+
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+            "confluence_server_url": "https://example.com/confluence/",
+        },
+    )
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
+    app.cleanup()
+
+    source_file.write_text(
+        data=index_rst_template.format(mention=docutils_role_source),
+    )
+    app = make_app(srcdir=source_directory)
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    docutils_role_html = (app.outdir / "index.html").read_text()
+
+    assert confluencebuilder_role_html == docutils_role_html
+
+
+def test_confluence_mention_without_trailing_slash(
+    tmp_path: Path,
+    make_app: Callable[..., SphinxTestApp],
+) -> None:
+    """
+    The ``:confluence_mention:`` role correctly handles a
+    ``confluence_server_url`` without a trailing slash.
+    """
+    source_directory = tmp_path / "source"
+    source_directory.mkdir()
+    (source_directory / "conf.py").touch()
+
+    source_file = source_directory / "index.rst"
+    index_rst_template = dedent(
+        text="""\
+            {mention}
+            """,
+    )
+
+    confluencebuilder_role_source = dedent(
+        text="""\
+            :confluence_mention:`1234a`
+            """,
+    )
+
+    # The expected URL should still include the /wiki/ path segment
+    docutils_role_source = dedent(
+        text="""\
+            `@1234a <https://example.com/wiki/people/1234a>`_
+            """,
+    )
+
+    source_file.write_text(
+        data=index_rst_template.format(
+            mention=confluencebuilder_role_source,
+        ),
+    )
+
+    # Note: No trailing slash on confluence_server_url
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+            "confluence_server_url": "https://example.com/wiki",
+        },
+    )
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    confluencebuilder_role_html = (app.outdir / "index.html").read_text()
+    app.cleanup()
+
+    source_file.write_text(
+        data=index_rst_template.format(mention=docutils_role_source),
+    )
+    app = make_app(srcdir=source_directory)
+    app.build()
+    assert app.statuscode == 0
+    assert not app.warning.getvalue()
+
+    docutils_role_html = (app.outdir / "index.html").read_text()
+
+    assert confluencebuilder_role_html == docutils_role_html
+
+
 def test_server_url_not_given(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],

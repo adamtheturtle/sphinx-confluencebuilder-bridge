@@ -6,6 +6,10 @@ Changelog
 Next
 ----
 
+2026.01.12
+----------
+
+
 * Give version in extension metadata.
 * Fix ``:confluence_mention:`` URLs when ``confluence_server_url`` has a custom context path.
   Users who previously omitted ``/wiki/`` from their ``confluence_server_url`` must now include it

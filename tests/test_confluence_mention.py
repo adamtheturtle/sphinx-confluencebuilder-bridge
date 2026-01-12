@@ -220,13 +220,9 @@ def test_confluence_mention_with_custom_context_path(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
-    """The ``:confluence_mention:`` role correctly handles a
+    """
+    The ``:confluence_mention:`` role correctly handles a
     ``confluence_server_url`` with a custom context path (not ``/wiki/``).
-
-    When Confluence is deployed at a custom path like
-    ``https://example.com/confluence/``, the mention URL should be
-    ``https://example.com/confluence/people/1234a``, not
-    ``https://example.com/wiki/people/1234a``.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()

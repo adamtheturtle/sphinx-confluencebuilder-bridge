@@ -1,6 +1,4 @@
-"""
-Tests for the ``:confluence_mention:`` role.
-"""
+"""Tests for the ``:confluence_mention:`` role."""
 
 from collections.abc import Callable
 from pathlib import Path
@@ -16,7 +14,8 @@ def test_confluence_mention_with_user_id(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_mention:`` role renders like a link to a user ID when
+    The ``:confluence_mention:`` role renders like a link to a user ID
+    when
     using an identifier not set in ``confluence_mentions``.
     """
     source_directory = tmp_path / "source"
@@ -83,7 +82,8 @@ def test_confluence_mention_with_user_identifier(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_mention:`` role renders like a link to a user profile
+    The ``:confluence_mention:`` role renders like a link to a user
+    profile
     when using an identifier set in ``confluence_mentions``.
     """
     source_directory = tmp_path / "source"
@@ -153,7 +153,8 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_mention:`` role assumes that if a user identifier is not
+    The ``:confluence_mention:`` role assumes that if a user identifier
+    is not
     in the me when using an identifier set in ``confluence_mentions``.
     """
     source_directory = tmp_path / "source"
@@ -358,7 +359,8 @@ def test_server_url_not_given(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``:confluence_mention:`` role renders like a link to a user profile.
+    The ``:confluence_mention:`` role renders like a link to a user
+    profile.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()

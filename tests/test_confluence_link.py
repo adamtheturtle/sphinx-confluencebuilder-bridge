@@ -1,6 +1,4 @@
-"""
-Tests for the ``:confluence_link:`` role.
-"""
+"""Tests for the ``:confluence_link:`` role."""
 
 import json
 from collections.abc import Callable
@@ -14,9 +12,7 @@ def test_confluence_link(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
-    """
-    The ``:confluence_link:`` role renders like a normal link.
-    """
+    """The ``:confluence_link:`` role renders like a normal link."""
     source_directory = tmp_path / "source"
     source_directory.mkdir()
     (source_directory / "conf.py").touch()
@@ -79,9 +75,7 @@ def test_linkcheck(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
-    """
-    Links are checked by the ``linkcheck`` builder.
-    """
+    """Links are checked by the ``linkcheck`` builder."""
     source_directory = tmp_path / "source"
     source_directory.mkdir()
     (source_directory / "conf.py").touch()

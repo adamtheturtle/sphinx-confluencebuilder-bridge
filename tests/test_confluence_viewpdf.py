@@ -13,7 +13,8 @@ def test_confluence_viewpdf(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``..confluence_viewpdf::`` directive renders like a normal PDF link.
+    The ``..confluence_viewpdf::`` directive renders like a normal PDF
+    link.
     """
     source_directory = tmp_path / "source"
     source_data_directory = source_directory / "data"

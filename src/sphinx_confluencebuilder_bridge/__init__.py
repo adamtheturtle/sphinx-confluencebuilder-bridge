@@ -44,9 +44,7 @@ class _Contents(Contents):
     option_spec["max-level"] = directives.nonnegative_int
 
     def run(self) -> list[Node]:
-        """
-        Run the directive.
-        """
+        """Run the directive."""
         # The ``depth`` option is used by the ``.. contents::`` directive,
         # while we use ``max-level`` for ``.. confluence_toc``..
         # Here we translate the ``max-level`` option to ``depth``.
@@ -142,7 +140,8 @@ def _doc_role(
     inliner: Inliner,
 ) -> tuple[list[Node], Sequence[system_message]]:
     """
-    This role acts just like the ``:doc:`` role, linking to other documents in
+    This role acts just like the ``:doc:`` role, linking to other
+    documents in
     this project.
     """
     env = inliner.document.settings.env
@@ -155,7 +154,8 @@ def _doc_role(
 @beartype
 def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     """
-    Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
+    Allow ``sphinx-confluencebuilder`` directives and roles to be used
+    with the
     HTML builder.
     """
     # ``sphinxcontrib-confluencebuilder`` registers directives and roles e.g.
@@ -187,7 +187,8 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
 @beartype
 def setup(app: Sphinx) -> ExtensionMetadata:
     """
-    Allow ``sphinx-confluencebuilder`` directives and roles to be used with the
+    Allow ``sphinx-confluencebuilder`` directives and roles to be used
+    with the
     HTML builder.
     """
     app.connect(

@@ -13,7 +13,8 @@ def test_confluence_toc(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The table of contents directive renders like a normal table of contents.
+    The table of contents directive renders like a normal table of
+    contents.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -102,7 +103,8 @@ def test_max_level(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The table of contents directive renders like a normal table of contents,
+    The table of contents directive renders like a normal table of
+    contents,
     even with a ``max-level``.
     """
     source_directory = tmp_path / "source"
@@ -191,7 +193,8 @@ def test_max_level(
 
 
 def test_contents_option_spec_not_mutated() -> None:
-    """Importing the custom directive should not mutate the option_spec of the
+    """Importing the custom directive should not mutate the option_spec of
+    the
     ``docutils.contents`` directive.
 
     This test relies on the shape of ``Contents.option_spec``

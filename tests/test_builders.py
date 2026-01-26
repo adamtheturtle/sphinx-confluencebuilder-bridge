@@ -1,6 +1,4 @@
-"""
-Tests for using various builders.
-"""
+"""Tests for using various builders."""
 
 from collections.abc import Callable
 from importlib.metadata import version
@@ -19,9 +17,7 @@ def test_not_html(
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
-    """
-    The roles and directives work for non-HTML builders.
-    """
+    """The roles and directives work for non-HTML builders."""
     source_directory = tmp_path / "source"
     source_directory.mkdir()
     (source_directory / "conf.py").touch()
@@ -102,8 +98,8 @@ def test_translatable_builders(
     make_app: Callable[..., SphinxTestApp],
     buildername: str,
 ) -> None:
-    """
-    The roles and directives do not break the builders with "translator"s.
+    """The roles and directives do not break the builders with
+    "translator"s.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()
@@ -150,9 +146,7 @@ def test_translatable_builders(
 
 
 def test_setup() -> None:
-    """
-    The setup function returns the correct metadata.
-    """
+    """The setup function returns the correct metadata."""
     app = create_autospec(spec=Sphinx, instance=True)
     result = sphinx_confluencebuilder_bridge.setup(app=app)
     assert result == {

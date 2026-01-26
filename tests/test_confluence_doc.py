@@ -1,6 +1,4 @@
-"""
-Tests for the ``:confluence_doc:`` role.
-"""
+"""Tests for the ``:confluence_doc:`` role."""
 
 from collections.abc import Callable
 from pathlib import Path
@@ -14,7 +12,8 @@ def test_confluence_doc(
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
     """
-    The ``confluence_doc`` role renders like a normal link to another document.
+    The ``confluence_doc`` role renders like a normal link to another
+    document.
     """
     source_directory = tmp_path / "source"
     source_directory.mkdir()

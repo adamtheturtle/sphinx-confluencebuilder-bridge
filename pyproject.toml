@@ -84,14 +84,14 @@ urls.Source = "https://github.com/adamtheturtle/sphinx-confluencebuilder-bridge"
 [tool.setuptools]
 zip-safe = false
 
-[tool.setuptools.packages.find]
-where = [
-    "src",
-]
-
 [tool.setuptools.package-data]
 sphinx_confluencebuilder_bridge = [
     "py.typed",
+]
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
 ]
 
 [tool.distutils.bdist_wheel]
@@ -144,6 +144,12 @@ lint.unfixable = [
 lint.pydocstyle.convention = "google"
 
 [tool.pylint]
+
+[tool.pylint.'FORMAT']
+
+# Allow the body of an if to be on the same line as the test if there is no
+# else.
+single-line-if-stmt = false
 
 [tool.pylint.'MASTER']
 
@@ -234,12 +240,6 @@ disable = [
     'protected-access',
 ]
 
-[tool.pylint.'FORMAT']
-
-# Allow the body of an if to be on the same line as the test if there is no
-# else.
-single-line-if-stmt = false
-
 [tool.pylint.'SPELLING']
 
 # Spelling dictionary name. Available dictionaries: none. To make it working
@@ -298,14 +298,14 @@ max_supported_python = "3.14"
 xfail_strict = true
 log_cli = true
 
-[tool.coverage.run]
-
-branch = true
-
 [tool.coverage.report]
 exclude_also = [
     "if TYPE_CHECKING:",
 ]
+
+[tool.coverage.run]
+
+branch = true
 
 [tool.mypy]
 

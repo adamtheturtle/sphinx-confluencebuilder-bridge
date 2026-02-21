@@ -54,7 +54,7 @@ optional-dependencies.dev = [
     "myst-parser==5.0.0",
     "prek==0.3.3",
     "pydocstringformatter==0.7.5",
-    "pylint[spelling]==4.0.4",
+    "pylint[spelling]==4.0.5",
     "pyproject-fmt==2.16.1",
     "pyrefly==0.53.0",
     "pyright==1.1.408",

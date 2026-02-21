@@ -9,6 +9,7 @@ from sphinx.testing.util import SphinxTestApp
 
 
 def test_confluence_viewpdf(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:

@@ -8,6 +8,7 @@ from sphinx.testing.util import SphinxTestApp
 
 
 def test_confluence_doc(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -87,6 +88,7 @@ def test_confluence_doc(
 
 
 def test_confluence_doc_missing_document_warning(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:

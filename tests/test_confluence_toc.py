@@ -9,6 +9,7 @@ from sphinx.testing.util import SphinxTestApp
 
 
 def test_confluence_toc(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -99,6 +100,7 @@ def test_confluence_toc(
 
 
 def test_max_level(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:

@@ -9,6 +9,7 @@ from sphinx.testing.util import SphinxTestApp
 
 
 def test_confluence_link(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -72,6 +73,7 @@ def test_confluence_link(
 
 
 def test_linkcheck(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:

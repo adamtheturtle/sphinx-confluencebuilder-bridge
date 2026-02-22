@@ -14,6 +14,7 @@ import sphinx_confluencebuilder_bridge
 
 
 def test_not_html(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -94,6 +95,7 @@ def test_not_html(
     argvalues=["spelling", "confluence", "linkcheck"],
 )
 def test_translatable_builders(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
     buildername: str,

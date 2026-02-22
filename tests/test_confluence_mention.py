@@ -10,6 +10,7 @@ from sphinx.testing.util import SphinxTestApp
 
 
 def test_confluence_mention_with_user_id(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -78,6 +79,7 @@ def test_confluence_mention_with_user_id(
 
 
 def test_confluence_mention_with_user_identifier(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -149,6 +151,7 @@ def test_confluence_mention_with_user_identifier(
 
 
 def test_confluence_mention_with_user_identifier_not_in_mentions(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -218,6 +221,7 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
 
 
 def test_confluence_mention_with_custom_context_path(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -286,6 +290,7 @@ def test_confluence_mention_with_custom_context_path(
 
 
 def test_confluence_mention_without_trailing_slash(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -355,6 +360,7 @@ def test_confluence_mention_without_trailing_slash(
 
 
 def test_server_url_not_given(
+    *,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:

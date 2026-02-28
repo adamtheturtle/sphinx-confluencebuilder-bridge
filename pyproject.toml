@@ -73,7 +73,7 @@ optional-dependencies.dev = [
     "sphinx-toolbox==4.1.2",
     "sphinxcontrib-confluencebuilder==3.0.0",
     "sphinxcontrib-spelling==8.0.2",
-    "ty==0.0.18",
+    "ty==0.0.19",
     "types-docutils==0.22.3.20260223",
     "vulture==2.14",
     "yamlfix==1.19.1",

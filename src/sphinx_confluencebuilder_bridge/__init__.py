@@ -176,8 +176,11 @@ def _connect_confluence_to_html_builder(app: Sphinx) -> None:
     ):
         return
     app.add_directive(name="confluence_toc", cls=_Contents)
-    if app.builder.name == "html":
-        # This uses ``iframe`` which is only supported in the HTML builder.
+    if app.builder.format == "html":
+        # This uses ``iframe`` which is only supported by builders which
+        # produce HTML output. We therefore check the builder's output
+        # ``format`` rather than its ``name`` so that HTML-family builders
+        # such as ``dirhtml`` and ``singlehtml`` are also supported.
         app.add_directive(name="confluence_viewpdf", cls=PdfIncludeDirective)
     app.add_role(name="confluence_link", role=_link_role)
     app.add_role(name="confluence_doc", role=_doc_role)

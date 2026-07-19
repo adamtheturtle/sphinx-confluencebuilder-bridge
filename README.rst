@@ -43,7 +43,7 @@ The following directives are supported:
    * The only supported option is `max-level <https://sphinxcontrib-confluencebuilder.readthedocs.io/en/stable/directives/#directive-option-confluence_toc-max-level>`_.
 
 * ``confluence_viewpdf``
-   * HTML builder only.
+   * HTML output builders only (e.g. ``html``, ``dirhtml``, ``singlehtml``).
    * Requires the PDF to be in a directory specified in `html_static_path <https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_static_path>`_.
 
 Supported roles

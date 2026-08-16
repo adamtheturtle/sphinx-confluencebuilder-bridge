@@ -5,6 +5,11 @@ Changelog
 
 .. towncrier release notes start
 
+2026.08.16
+----------
+
+- Register the ``.. confluence_viewpdf::`` directive for all HTML output builders (e.g. ``dirhtml`` and ``singlehtml``), not only the ``html`` builder.
+
 2026.01.12
 ----------
 

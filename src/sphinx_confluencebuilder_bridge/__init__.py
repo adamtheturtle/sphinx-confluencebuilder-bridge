@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 class _Contents(Contents):
     """A directive to put a table of contents in the page.
 
-    Use this in place for the ``.. confluence_toc::`` directive, but they are
+    Use this in place of the ``.. confluence_toc::`` directive, but they are
     not exactly the same. For example, the ``.. confluence_toc::`` directive
     does not render the page title.
 

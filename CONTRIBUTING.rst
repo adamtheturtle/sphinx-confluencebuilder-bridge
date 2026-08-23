@@ -59,7 +59,7 @@ Continuous integration
 ----------------------
 
 Tests are run on GitHub Actions.
-The configuration for this is in `.github/workflows/`.
+The configuration for this is in ``.github/workflows/``.
 Release Process
 ---------------
 

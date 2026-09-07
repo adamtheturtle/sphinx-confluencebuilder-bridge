@@ -40,6 +40,7 @@ dependencies = [
     "docutils>=0.19",
     "sphinx>=9,<10",
     "sphinx-simplepdf>=1.6.0",
+    "typing-extensions>=4.4",
 ]
 optional-dependencies.dev = [
     "actionlint-py==1.7.12.24",
@@ -360,6 +361,7 @@ plugins = [
 
 [tool.pyrefly]
 errors.non-exhaustive-match = "error"
+preset = "strict"
 
 [tool.pyright]
 typeCheckingMode = "strict"

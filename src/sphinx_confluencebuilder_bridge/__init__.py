@@ -22,6 +22,7 @@ from sphinx.util.typing import ExtensionMetadata
 from sphinx_simplepdf.directives.pdfinclude import (  # pyright: ignore[reportMissingTypeStubs]
     PdfIncludeDirective,
 )
+from typing_extensions import override
 
 if TYPE_CHECKING:
     from sphinx.environment import BuildEnvironment
@@ -43,6 +44,7 @@ class _Contents(Contents):
     option_spec = (Contents.option_spec or {}).copy()
     option_spec["max-level"] = directives.nonnegative_int
 
+    @override
     def run(self) -> list[Node]:
         """Run the directive."""
         # The ``depth`` option is used by the ``.. contents::`` directive,

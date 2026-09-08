@@ -115,9 +115,9 @@ def _mention_role(
     del role
     del lineno
     link_text = f"@{text}"
-    env: BuildEnvironment = inliner.document.settings.env
-    users: dict[str, str] | None = env.config.confluence_mentions
-    server_url: str | None = env.config.confluence_server_url
+    env: BuildEnvironment = inliner.document.settings.env  # ty: ignore[unsound-assignment]
+    users: dict[str, str] | None = env.config.confluence_mentions  # ty: ignore[unsound-assignment]
+    server_url: str | None = env.config.confluence_server_url  # ty: ignore[unsound-assignment]
 
     if server_url is None:
         message = (
@@ -150,7 +150,7 @@ def _doc_role(
     documents in
     this project.
     """
-    env: BuildEnvironment = inliner.document.settings.env
+    env: BuildEnvironment = inliner.document.settings.env  # ty: ignore[unsound-assignment]
     std_domain = env.get_domain(domainname="std")
     doc_role = std_domain.role(name="doc")
     assert doc_role is not None

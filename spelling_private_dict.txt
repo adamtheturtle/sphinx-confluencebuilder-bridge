@@ -17,4 +17,5 @@ reportUnknownVariableType
 rst
 str
 tuple
+ty
 whitespace

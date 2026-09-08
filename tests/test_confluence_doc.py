@@ -30,7 +30,7 @@ def test_confluence_doc(
         Some text
         """,
     )
-    linked_file.write_text(data=linked_file_content)
+    _ = linked_file.write_text(data=linked_file_content)
 
     index_rst_template = dedent(
         text="""\
@@ -54,7 +54,7 @@ def test_confluence_doc(
         """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(link=confluencebuilder_role_source),
     )
 
@@ -69,18 +69,18 @@ def test_confluence_doc(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(link=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -121,7 +121,7 @@ def test_confluence_doc_missing_document_warning(
         """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(link=confluencebuilder_role_source),
     )
 
@@ -138,13 +138,13 @@ def test_confluence_doc_missing_document_warning(
     confluencebuilder_warnings = app.warning.getvalue()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(link=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     docutils_warnings = app.warning.getvalue()
 
-    assert docutils_warnings
-    assert confluencebuilder_warnings
+    assert docutils_warnings != ""
+    assert confluencebuilder_warnings != ""
     assert docutils_warnings == confluencebuilder_warnings

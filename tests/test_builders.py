@@ -46,7 +46,7 @@ def test_not_html(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -68,20 +68,20 @@ def test_not_html(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_directive_html = (
         app.outdir.parent / "text" / "index.txt"
     ).read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_directive_html = (
         app.outdir.parent / "text" / "index.txt"
@@ -120,7 +120,7 @@ def test_translatable_builders(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -143,7 +143,7 @@ def test_translatable_builders(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
     app.cleanup()
 
 

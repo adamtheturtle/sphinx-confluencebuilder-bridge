@@ -37,7 +37,7 @@ def test_confluence_link(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             link=confluencebuilder_role_source,
         ),
@@ -54,18 +54,18 @@ def test_confluence_link(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(link=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -91,7 +91,7 @@ def test_linkcheck(
             """,
     )
 
-    source_file.write_text(data=index_rst_content)
+    _ = source_file.write_text(data=index_rst_content)
 
     app = make_app(
         srcdir=source_directory,
@@ -108,7 +108,7 @@ def test_linkcheck(
         },
     )
     app.build()
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
     assert app.statuscode != 0
     output_json_lines = (app.outdir / "output.json").read_text().splitlines()
     expected_num_errors = 2

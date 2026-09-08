@@ -23,7 +23,7 @@ def test_confluence_viewpdf(
     source_data_directory.mkdir(parents=True)
     (source_directory / "conf.py").touch()
     pdf_path = Path(__file__).parent / "data" / "example.pdf"
-    shutil.copyfile(
+    _ = shutil.copyfile(
         src=pdf_path,
         dst=source_data_directory / "example.pdf",
     )
@@ -47,7 +47,7 @@ def test_confluence_viewpdf(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             pdf=confluencebuilder_directive_source,
         ),
@@ -64,12 +64,12 @@ def test_confluence_viewpdf(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(pdf=docutils_directive_source),
     )
     app = make_app(
@@ -82,7 +82,7 @@ def test_confluence_viewpdf(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_directive_html = (app.outdir / "index.html").read_text()
 
@@ -110,13 +110,13 @@ def test_confluence_viewpdf_html_family_builders(
     source_data_directory.mkdir(parents=True)
     (source_directory / "conf.py").touch()
     pdf_path = Path(__file__).parent / "data" / "example.pdf"
-    shutil.copyfile(
+    _ = shutil.copyfile(
         src=pdf_path,
         dst=source_data_directory / "example.pdf",
     )
 
     source_file = source_directory / "index.rst"
-    source_file.write_text(
+    _ = source_file.write_text(
         data=dedent(
             text="""\
                 .. confluence_viewpdf:: data/example.pdf
@@ -136,4 +136,4 @@ def test_confluence_viewpdf_html_family_builders(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""

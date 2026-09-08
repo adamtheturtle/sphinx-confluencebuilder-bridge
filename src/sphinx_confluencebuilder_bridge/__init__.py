@@ -41,7 +41,9 @@ class _Contents(Contents):
     that.
     """
 
-    option_spec = (Contents.option_spec or {}).copy()
+    option_spec = (
+        Contents.option_spec.copy() if Contents.option_spec is not None else {}
+    )
     option_spec["max-level"] = directives.nonnegative_int
 
     @override
@@ -56,7 +58,9 @@ class _Contents(Contents):
         # The ``depth`` option has a default of "unlimited". See:
         # https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents.
         default_depth = 1000
-        depth = self.options.pop("max-level", default_depth) + 1
+        raw_depth: object = self.options.pop("max-level", default_depth)
+        assert isinstance(raw_depth, int)
+        depth = raw_depth + 1
         self.options["depth"] = depth
         # In Confluence this directive shows and inline table of contents.
         # In the Furo HTML theme, the table of contents is shown in the
@@ -146,11 +150,19 @@ def _doc_role(
     documents in
     this project.
     """
-    env = inliner.document.settings.env
-    std_domain = env.get_domain("std")
-    doc_role = std_domain.role("doc")
+    env: BuildEnvironment = inliner.document.settings.env
+    std_domain = env.get_domain(domainname="std")
+    doc_role = std_domain.role(name="doc")
     assert doc_role is not None
-    return doc_role(role, rawtext, text, lineno, inliner, {}, [])
+    return doc_role(
+        role,
+        rawtext,
+        text,
+        lineno,
+        inliner,
+        options={},
+        content=[],
+    )
 
 
 @beartype
@@ -196,7 +208,7 @@ def setup(app: Sphinx) -> ExtensionMetadata:
     with the
     HTML builder.
     """
-    app.connect(
+    _ = app.connect(
         event="builder-inited",
         callback=_connect_confluence_to_html_builder,
     )

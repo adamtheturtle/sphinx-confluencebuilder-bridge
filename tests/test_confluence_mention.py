@@ -42,7 +42,7 @@ def test_confluence_mention_with_user_id(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -60,18 +60,18 @@ def test_confluence_mention_with_user_id(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -111,7 +111,7 @@ def test_confluence_mention_with_user_identifier(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -132,18 +132,18 @@ def test_confluence_mention_with_user_identifier(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -183,7 +183,7 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -202,18 +202,18 @@ def test_confluence_mention_with_user_identifier_not_in_mentions(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -253,7 +253,7 @@ def test_confluence_mention_with_custom_context_path(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -271,18 +271,18 @@ def test_confluence_mention_with_custom_context_path(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -322,7 +322,7 @@ def test_confluence_mention_without_trailing_slash(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),
@@ -341,18 +341,18 @@ def test_confluence_mention_without_trailing_slash(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_role_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(mention=docutils_role_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_role_html = (app.outdir / "index.html").read_text()
 
@@ -385,7 +385,7 @@ def test_server_url_not_given(
             """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             mention=confluencebuilder_role_source,
         ),

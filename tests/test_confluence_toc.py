@@ -64,7 +64,7 @@ def test_confluence_toc(
             """,  # noqa: E501
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             toc=confluencebuilder_directive_source,
         ),
@@ -81,18 +81,18 @@ def test_confluence_toc(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(toc=docutils_directive_source),
     )
     app = make_app(srcdir=source_directory)
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_directive_html = (app.outdir / "index.html").read_text()
 
@@ -158,7 +158,7 @@ def test_max_level(
         """,
     )
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(
             toc=confluencebuilder_directive_source,
         ),
@@ -175,19 +175,19 @@ def test_max_level(
     )
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     confluencebuilder_directive_html = (app.outdir / "index.html").read_text()
     app.cleanup()
 
-    source_file.write_text(
+    _ = source_file.write_text(
         data=index_rst_template.format(toc=docutils_directive_source),
     )
     app = make_app(srcdir=source_directory)
 
     app.build()
     assert app.statuscode == 0
-    assert not app.warning.getvalue()
+    assert app.warning.getvalue() == ""
 
     docutils_directive_html = (app.outdir / "index.html").read_text()
 

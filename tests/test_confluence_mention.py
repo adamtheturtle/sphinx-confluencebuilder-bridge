@@ -5,8 +5,51 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest
+from beartype.roar import BeartypeCallHintParamViolation
 from sphinx.errors import ExtensionError
 from sphinx.testing.util import SphinxTestApp
+
+
+@pytest.mark.parametrize(
+    argnames="configuration",
+    argvalues=[
+        pytest.param(
+            {"confluence_mentions": []},
+            id="mentions",
+        ),
+        pytest.param(
+            {"confluence_server_url": 42},
+            id="server-url",
+        ),
+    ],
+)
+def test_invalid_mention_configuration(
+    *,
+    configuration: dict[str, object],
+    tmp_path: Path,
+    make_app: Callable[..., SphinxTestApp],
+) -> None:
+    """Invalid mention configuration is rejected during a public build."""
+    source_directory = tmp_path / "source"
+    source_directory.mkdir()
+    (source_directory / "conf.py").touch()
+    _ = (source_directory / "index.rst").write_text(
+        data=":confluence_mention:`eloise.red`",
+    )
+    app = make_app(
+        srcdir=source_directory,
+        confoverrides={
+            "extensions": [
+                "sphinxcontrib.confluencebuilder",
+                "sphinx_confluencebuilder_bridge",
+            ],
+            "confluence_server_url": "https://example.com/wiki/",
+            **configuration,
+        },
+    )
+
+    with pytest.raises(expected_exception=BeartypeCallHintParamViolation):
+        app.build()
 
 
 def test_confluence_mention_with_user_id(

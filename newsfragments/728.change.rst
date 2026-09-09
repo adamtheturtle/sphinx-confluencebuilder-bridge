@@ -1,0 +1,1 @@
+Validate mention configuration at the Sphinx boundary instead of suppressing unsafe assignments.

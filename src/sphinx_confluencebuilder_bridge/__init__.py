@@ -4,8 +4,8 @@ Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
 from collections.abc import Sequence
+from dataclasses import dataclass
 from importlib.metadata import version
-from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
 from beartype import beartype
@@ -16,6 +16,7 @@ from docutils.parsers.rst.directives.parts import Contents
 from docutils.parsers.rst.states import Inliner
 from docutils.utils import SystemMessage
 from sphinx.application import Sphinx
+from sphinx.environment import BuildEnvironment
 from sphinx.errors import ExtensionError
 from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
@@ -23,9 +24,6 @@ from sphinx_simplepdf.directives.pdfinclude import (  # pyright: ignore[reportMi
     PdfIncludeDirective,
 )
 from typing_extensions import override
-
-if TYPE_CHECKING:
-    from sphinx.environment import BuildEnvironment
 
 
 @beartype
@@ -74,6 +72,30 @@ class _Contents(Contents):
         return list(super().run())
 
 
+@dataclass(frozen=True, kw_only=True, slots=True)
+class _MentionConfiguration:
+    """Configuration used to render a Confluence mention."""
+
+    users: dict[str, str] | None
+    server_url: str | None
+
+
+@beartype
+def _environment(env: BuildEnvironment, /) -> BuildEnvironment:
+    """Return a runtime-validated Sphinx build environment."""
+    return env
+
+
+@beartype
+def _mention_configuration(
+    *,
+    users: dict[str, str] | None,
+    server_url: str | None,
+) -> _MentionConfiguration:
+    """Return runtime-validated mention configuration."""
+    return _MentionConfiguration(users=users, server_url=server_url)
+
+
 @beartype
 def _link_role(
     # We allow multiple unused function arguments, to match the Sphinx API.
@@ -115,21 +137,24 @@ def _mention_role(
     del role
     del lineno
     link_text = f"@{text}"
-    env: BuildEnvironment = inliner.document.settings.env  # ty: ignore[unsound-assignment]
-    users: dict[str, str] | None = env.config.confluence_mentions  # ty: ignore[unsound-assignment]
-    server_url: str | None = env.config.confluence_server_url  # ty: ignore[unsound-assignment]
+    env = _environment(inliner.document.settings.env)
+    configuration = _mention_configuration(
+        users=env.config.confluence_mentions,
+        server_url=env.config.confluence_server_url,
+    )
 
-    if server_url is None:
+    if configuration.server_url is None:
         message = (
             "The 'confluence_server_url' configuration value is required "
             "for the 'confluence_mention' role."
         )
         raise ExtensionError(message=message)
 
-    if users is None or text not in users:
+    if configuration.users is None or text not in configuration.users:
         mention_id = text
     else:
-        mention_id: str = users[text]
+        mention_id: str = configuration.users[text]
+    server_url = configuration.server_url
     if not server_url.endswith("/"):
         server_url = f"{server_url}/"
     link_url = urljoin(base=server_url, url=f"people/{mention_id}")
@@ -150,7 +175,7 @@ def _doc_role(
     documents in
     this project.
     """
-    env: BuildEnvironment = inliner.document.settings.env  # ty: ignore[unsound-assignment]
+    env = _environment(inliner.document.settings.env)
     std_domain = env.get_domain(domainname="std")
     doc_role = std_domain.role(name="doc")
     assert doc_role is not None

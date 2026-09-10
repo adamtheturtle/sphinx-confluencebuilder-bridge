@@ -1,0 +1,1 @@
+Validate the table-of-contents depth at the Docutils option boundary.

@@ -27,6 +27,12 @@ from typing_extensions import override
 
 
 @beartype
+def _contents_depth(*, max_level: int) -> int:
+    """Return the HTML contents depth for a Confluence maximum level."""
+    return max_level + 1
+
+
+@beartype
 class _Contents(Contents):
     """A directive to put a table of contents in the page.
 
@@ -56,9 +62,9 @@ class _Contents(Contents):
         # The ``depth`` option has a default of "unlimited". See:
         # https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents.
         default_depth = 1000
-        raw_depth: object = self.options.pop("max-level", default_depth)
-        assert isinstance(raw_depth, int)
-        depth = raw_depth + 1
+        depth = _contents_depth(
+            max_level=self.options.pop("max-level", default_depth)
+        )
         self.options["depth"] = depth
         # In Confluence this directive shows and inline table of contents.
         # In the Furo HTML theme, the table of contents is shown in the

@@ -20,6 +20,8 @@ from sphinx.environment import BuildEnvironment
 from sphinx.errors import ExtensionError
 from sphinx.util.docutils import is_directive_registered, is_role_registered
 from sphinx.util.typing import ExtensionMetadata
+
+# The Sphinx Simple PDF package does not publish typing metadata.
 from sphinx_simplepdf.directives.pdfinclude import (  # pyright: ignore[reportMissingTypeStubs]
     PdfIncludeDirective,
 )

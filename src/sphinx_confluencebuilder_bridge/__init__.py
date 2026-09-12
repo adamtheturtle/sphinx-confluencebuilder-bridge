@@ -78,6 +78,7 @@ class _Contents(Contents):
         return list(super().run())
 
 
+@beartype
 @dataclass(frozen=True, kw_only=True, slots=True)
 class _MentionConfiguration:
     """Configuration used to render a Confluence mention."""

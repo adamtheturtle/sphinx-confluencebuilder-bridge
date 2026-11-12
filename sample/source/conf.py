@@ -1,5 +1,8 @@
 """Sample ``conf.py``."""
 
+# Sphinx requires lowercase names for its configuration settings.
+# pylint: disable=invalid-name
+
 extensions = [
     "sphinxcontrib.confluencebuilder",
     "sphinx_confluencebuilder_bridge",

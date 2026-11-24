@@ -5,20 +5,21 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest
-from beartype.roar import BeartypeCallHintParamViolation
 from sphinx.errors import ExtensionError
 from sphinx.testing.util import SphinxTestApp
 
 
 @pytest.mark.parametrize(
-    argnames="configuration",
+    argnames=("configuration", "option_name"),
     argvalues=[
         pytest.param(
             {"confluence_mentions": []},
+            "confluence_mentions",
             id="mentions",
         ),
         pytest.param(
             {"confluence_server_url": 42},
+            "confluence_server_url",
             id="server-url",
         ),
     ],
@@ -26,6 +27,7 @@ from sphinx.testing.util import SphinxTestApp
 def test_invalid_mention_configuration(
     *,
     configuration: dict[str, object],
+    option_name: str,
     tmp_path: Path,
     make_app: Callable[..., SphinxTestApp],
 ) -> None:
@@ -48,7 +50,7 @@ def test_invalid_mention_configuration(
         },
     )
 
-    with pytest.raises(expected_exception=BeartypeCallHintParamViolation):
+    with pytest.raises(expected_exception=ExtensionError, match=option_name):
         app.build()
 
 

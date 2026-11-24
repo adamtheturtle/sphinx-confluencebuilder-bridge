@@ -3,12 +3,14 @@ Sphinx extension to enable using directives and roles from Atlassian
 Confluence® Builder for Sphinx in other Sphinx builders such as HTML.
 """
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from importlib.metadata import version
+from typing import TypeGuard, TypeVar
 from urllib.parse import urljoin
 
 from beartype import beartype
+from beartype.door import TypeHint
 from docutils import nodes
 from docutils.nodes import Node, system_message
 from docutils.parsers.rst import directives
@@ -28,11 +30,23 @@ from sphinx_simplepdf.directives.pdfinclude import (  # pyright: ignore[reportMi
 )
 from typing_extensions import override
 
+_T = TypeVar("_T")
+
+
+def _require_type(
+    value: object, /, *, expected_type: type[_T], name: str
+) -> _T:
+    """Validate values provided by the document parser and extension."""
+    if not isinstance(value, expected_type):
+        msg = f"{name} must be a {expected_type.__name__}"
+        raise ExtensionError(message=msg)
+    return value
+
 
 @beartype
-def _contents_depth(*, max_level: int) -> int:
+def _contents_depth(*, max_level: object) -> int:
     """Return the HTML contents depth for a Confluence maximum level."""
-    return max_level + 1
+    return _require_type(max_level, expected_type=int, name="max-level") + 1
 
 
 @beartype
@@ -65,9 +79,8 @@ class _Contents(Contents):
         # The ``depth`` option has a default of "unlimited". See:
         # https://docutils.sourceforge.io/docs/ref/rst/directives.html#table-of-contents.
         default_depth = 1000
-        depth = _contents_depth(
-            max_level=self.options.pop("max-level", default_depth)
-        )
+        max_level: object = self.options.pop("max-level", default_depth)
+        depth = _contents_depth(max_level=max_level)
         self.options["depth"] = depth
         # In Confluence this directive shows and inline table of contents.
         # In the Furo HTML theme, the table of contents is shown in the
@@ -91,19 +104,37 @@ class _MentionConfiguration:
 
 
 @beartype
-def _environment(env: BuildEnvironment, /) -> BuildEnvironment:
+def _environment(inliner: Inliner, /) -> BuildEnvironment:
     """Return a runtime-validated Sphinx build environment."""
-    return env
+    settings: Mapping[str, object] = vars(inliner.document.settings)
+    return _require_type(
+        settings["env"], expected_type=BuildEnvironment, name="env"
+    )
+
+
+def _is_mention_users(value: object, /) -> TypeGuard[dict[str, str]]:
+    """Check the optional mapping from usernames to Confluence IDs."""
+    return TypeHint(hint=dict[str, str]).is_bearable(obj=value)
 
 
 @beartype
 def _mention_configuration(
     *,
-    users: dict[str, str] | None,
-    server_url: str | None,
+    users: object,
+    server_url: object,
 ) -> _MentionConfiguration:
     """Return runtime-validated mention configuration."""
-    return _MentionConfiguration(users=users, server_url=server_url)
+    if users is not None and not _is_mention_users(users):
+        msg = "confluence_mentions must map usernames to Confluence user IDs"
+        raise ExtensionError(message=msg)
+    url = (
+        None
+        if server_url is None
+        else _require_type(
+            server_url, expected_type=str, name="confluence_server_url"
+        )
+    )
+    return _MentionConfiguration(users=users, server_url=url)
 
 
 @beartype
@@ -147,11 +178,10 @@ def _mention_role(
     del role
     del lineno
     link_text = f"@{text}"
-    env = _environment(inliner.document.settings.env)
-    configuration = _mention_configuration(
-        users=env.config.confluence_mentions,
-        server_url=env.config.confluence_server_url,
-    )
+    env = _environment(inliner)
+    users: object = env.config["confluence_mentions"]
+    server: object = env.config["confluence_server_url"]
+    configuration = _mention_configuration(users=users, server_url=server)
 
     if configuration.server_url is None:
         message = (
@@ -185,7 +215,7 @@ def _doc_role(
     documents in
     this project.
     """
-    env = _environment(inliner.document.settings.env)
+    env = _environment(inliner)
     std_domain = env.get_domain(domainname="std")
     doc_role = std_domain.role(name="doc")
     assert doc_role is not None

@@ -4,8 +4,15 @@ import json
 from collections.abc import Callable
 from pathlib import Path
 from textwrap import dedent
+from typing import TypeGuard
 
+from beartype.door import TypeHint
 from sphinx.testing.util import SphinxTestApp
+
+
+def _is_json_object(value: object, /) -> TypeGuard[dict[str, object]]:
+    """Recognize a structured Linkcheck result."""
+    return TypeHint(hint=dict[str, object]).is_bearable(obj=value)
 
 
 def test_confluence_link(
@@ -114,5 +121,7 @@ def test_linkcheck(
     expected_num_errors = 2
     assert len(output_json_lines) == expected_num_errors
     for line in output_json_lines:
-        output_data = json.loads(s=line)
-        assert output_data["status"] == "broken"
+        output_data: object = json.loads(s=line)
+        assert _is_json_object(output_data)
+        status: object = output_data["status"]
+        assert status == "broken"

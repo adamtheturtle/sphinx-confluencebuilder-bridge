@@ -309,6 +309,8 @@ ignore_names = [
     "autoclass_content",
     "autoclass_content",
     "autodoc_member_order",
+    "confluence_mentions",
+    "confluence_server_url",
     "copybutton_exclude",
     "extensions",
     "final_argument_whitespace",

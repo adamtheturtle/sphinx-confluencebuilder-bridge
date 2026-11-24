@@ -36,7 +36,7 @@ _T = TypeVar("_T")
 def _require_type(
     value: object, /, *, expected_type: type[_T], name: str
 ) -> _T:
-    """Check values attached by Docutils and the Confluence extension."""
+    """Validate values provided by the document parser and extension."""
     if not isinstance(value, expected_type):
         msg = f"{name} must be a {expected_type.__name__}"
         raise ExtensionError(message=msg)

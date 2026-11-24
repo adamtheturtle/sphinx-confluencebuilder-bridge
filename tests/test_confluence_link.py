@@ -11,7 +11,7 @@ from sphinx.testing.util import SphinxTestApp
 
 
 def _is_json_object(value: object, /) -> TypeGuard[dict[str, object]]:
-    """Recognize a structured Linkcheck result."""
+    """Recognize a structured result from link checking."""
     return TypeHint(hint=dict[str, object]).is_bearable(obj=value)
 
 
